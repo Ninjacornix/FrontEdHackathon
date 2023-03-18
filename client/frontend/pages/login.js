@@ -19,15 +19,14 @@ export default function Login() {
     }
     const router = useRouter();
 
-    if(localStorage.getItem("token") == null) {
-        return (
-            <>
-                <LoginForm handleShowVerify={handleShowVerify} handleIncomingData={handleIncomingData}/>
-                <VerifyForm showVerify={showVerify} email={email} password={password}/>
-            </>
-        )
-    } else {
+    if(typeof window !== 'undefined' && localStorage.getItem("token") != null) {
         router.push("/dashboard");
     }
+    return (
+        <>
+            <LoginForm handleShowVerify={handleShowVerify} handleIncomingData={handleIncomingData}/>
+            <VerifyForm showVerify={showVerify} email={email} password={password}/>
+        </>
+    )
 
 }
