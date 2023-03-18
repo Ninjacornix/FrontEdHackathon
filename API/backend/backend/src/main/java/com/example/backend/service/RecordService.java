@@ -87,7 +87,7 @@ public class RecordService {
         if(!alerts.isEmpty()) {
             for (Threat threat : threats) {
                 for (Alert alert : alerts) {
-                    if (threat.getName().equals(alert.getData()) || threat.getSource().equals(alert.getData())) {
+                    if (threat.getName().equals(alert.getData()) && threat.getSource().equalsIgnoreCase(alert.getData())) {
                         emailService.sendAlert(alert);
                     }
                     else if (alert.getField().equals("potentialImpact")) {

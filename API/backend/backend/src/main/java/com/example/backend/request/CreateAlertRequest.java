@@ -16,5 +16,6 @@ public class CreateAlertRequest {
     private String description;
     private String data;
     private String name;
+    private boolean minorAlert;
 
 }

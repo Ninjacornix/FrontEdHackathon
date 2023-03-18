@@ -19,6 +19,7 @@ public class Alert {
     private String description;
     private String name;
     private String field;
+    private boolean minorAlert;
     private String data;
 
     @Override

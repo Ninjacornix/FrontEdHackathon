@@ -55,8 +55,6 @@ public class EmailService {
 
     @SneakyThrows
     public void sendAlert(Alert alert) {
-        List<Member> members = memberRepository.findAll();
-        List<String> recipientAddresses = members.stream().map(Member::getEmail).toList();
         String subject = "Alert";
         String body = alert.toString();
 
@@ -65,9 +63,22 @@ public class EmailService {
         helper.setText(body,true);
         helper.setSubject(subject);
         helper.setFrom("evil.evaluators@gmail.com");
-        for (String recipientAddress : recipientAddresses) {
-            helper.setTo(recipientAddress);
-            executorService.execute(() -> mailSender.send(mimeMessage));
+
+        if(alert.isMinorAlert()){
+            List<Member> minorMembers = memberRepository.findMembersByMinorAlertIsTrue();
+            List<String> minorRecipientAddresses = minorMembers.stream().map(Member::getEmail).toList();
+            for (String recipientAddress : minorRecipientAddresses) {
+                helper.setTo(recipientAddress);
+                executorService.execute(() -> mailSender.send(mimeMessage));
+            }
+        }
+        else {
+            List<Member> members = memberRepository.findAll();
+            List<String> recipientAddresses = members.stream().map(Member::getEmail).toList();
+            for (String recipientAddress : recipientAddresses) {
+                helper.setTo(recipientAddress);
+                executorService.execute(() -> mailSender.send(mimeMessage));
+            }
         }
         logger.info("Alert sent to all users");
     }
