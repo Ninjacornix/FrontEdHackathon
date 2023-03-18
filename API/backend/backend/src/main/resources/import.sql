@@ -35,3 +35,18 @@ insert into Threat(id, name, severity, source, potential_impact) values (34, 'Un
 insert into Threat(id, name, severity, source, potential_impact) values (35, 'Using Components with Known Vulnerabilities', 'MEDIUM', 'https://tumblr.com', 0.71);
 insert into Threat(id, name, severity, source, potential_impact) values (36, 'Insufficient Logging & Monitoring', 'LOW', 'https://wordpress.com', 0.51);
 insert into Threat(id, name, severity, source, potential_impact) values (37, 'Insecure Deserialization', 'HIGH', 'https://wikipedia.org', 0.91);
+
+insert into Record(id, timestamp) values (1, '2019-01-01 00:00:00');
+insert into Record(id, timestamp) values (2, '2019-01-01 00:00:01');
+insert into Record(id, timestamp) values (3, '2019-01-01 00:00:02');
+insert into Record(id, timestamp) values (4, '2019-01-01 00:00:03');
+
+insert into Record_Threat(record_id, threat_id) values (1, 1);
+insert into Record_Threat(record_id, threat_id) values (1, 2);
+insert into Record_Threat(record_id, threat_id) values (2, 3);
+insert into Record_Threat(record_id, threat_id) values (2, 4);
+insert into Record_Threat(record_id, threat_id) values (3, 1);
+insert into Record_Threat(record_id, threat_id) values (3, 5);
+
+insert into Member(id, first_Name, last_Name, email, password, role, phone_number, active) values (100, 'Mia', 'Miocic', 'mia@gmail.com', 'mia123', 'ROLE_ADMIN', '0911986574', TRUE);
+
