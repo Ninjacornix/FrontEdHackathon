@@ -1,24 +1,19 @@
-package com.example.backend.domain;
+package com.example.backend.domain.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.List;
 
-@Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class Threat {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+@Builder
+public class ThreatDto {
     private Long id;
     private String name;
     private String severity;
     private String source;
     private Float potentialImpact;
-    @ManyToMany(mappedBy = "threats")
-    private List<Record> records;
 }

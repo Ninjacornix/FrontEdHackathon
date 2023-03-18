@@ -1,0 +1,34 @@
+package com.example.backend.domain;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Entity
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class Alert {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+    private String description;
+    private String name;
+    private String field;
+    private String data;
+
+    @Override
+    public String toString() {
+        return "Alert{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", name='" + name + '\'' +
+                ", field='" + field + '\'' +
+                ", data='" + data + '\'' +
+                '}';
+    }
+}

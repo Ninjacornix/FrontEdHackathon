@@ -1,10 +1,22 @@
 import { useForm } from "react-hook-form"
+import axios from "axios"
 
 export default function LoginForm(props) {
     const {register, handleSubmit, formState: {errors}} = useForm()
+    const headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+    }
     const onSubmit = (data) => {
-        props.handleShowVerify()
-        document.querySelector("#login").classList.add("hidden")
+        axios.post(`http://localhost:8080/loginCode?email=${data.email}`, {headers}).then(res => {
+            if (res.status === 200) {
+                props.handleShowVerify()
+                document.querySelector("#login").classList.add("hidden")
+                props.handleIncomingData(data)
+            } else {
+                alert("Incorrect email or password")
+            }
+        })
     }
 
     return(
