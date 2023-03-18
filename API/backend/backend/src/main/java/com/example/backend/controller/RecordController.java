@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +27,11 @@ public class RecordController {
     @GetMapping("/records")
     public ResponseEntity<DataResult<List<RecordDto>>> getRecords() {
         return recordService.getRecords().intoResponseEntity();
+    }
+
+    @GetMapping("/threats/count")
+    public ResponseEntity<DataResult<?>> getThreatsCount() {
+        return recordService.getThreatsCount().intoResponseEntity();
     }
 
 }
