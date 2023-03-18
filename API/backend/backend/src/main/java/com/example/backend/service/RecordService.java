@@ -5,6 +5,7 @@ import com.example.backend.domain.Record;
 import com.example.backend.domain.Threat;
 import com.example.backend.domain.dto.RecordDto;
 import com.example.backend.domain.dto.ThreatDto;
+import com.example.backend.exception.BadRequestException;
 import com.example.backend.mapper.Mapper;
 import com.example.backend.repository.AlertRepository;
 import com.example.backend.repository.RecordRepository;
@@ -119,6 +120,17 @@ public class RecordService {
         recordRepository.deleteById(id);
         logger.info("Successfully deleted record");
         return new ActionResult(true, "Successfully deleted record");
+    }
+
+    public DataResult<?> getRecord(Long id) {
+        Record record = recordRepository.findById(id).
+                orElseThrow(() -> {
+                    logger.error("Record with id " + id + " not found");
+                    return new BadRequestException("Record with id " + id + " not found");
+                });
+        RecordDto recordDto = mapper.recordToRecordDto(record);
+        logger.info("Successfully retrieved record");
+        return new DataResult<>(true, "Successfully retrieved record", recordDto);
     }
 }
 

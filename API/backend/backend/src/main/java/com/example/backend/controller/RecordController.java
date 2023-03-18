@@ -33,6 +33,10 @@ public class RecordController {
     public ResponseEntity<DataResult<List<RecordDto>>> getRecords() {
         return recordService.getRecords().intoResponseEntity();
     }
+    @GetMapping("/records/{id}")
+    public ResponseEntity<DataResult<RecordDto>> getRecord(@PathVariable("id") Long id) {
+        return recordService.getRecord(id).intoResponseEntity();
+    }
 
     @DeleteMapping("/records/{id}")
     public ResponseEntity<ActionResult> deleteRecord(@PathVariable("id") Long id) {
@@ -43,5 +47,4 @@ public class RecordController {
     public ResponseEntity<DataResult<?>> getThreatsCount() {
         return recordService.getThreatsCount().intoResponseEntity();
     }
-
 }
