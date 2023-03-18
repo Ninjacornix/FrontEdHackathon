@@ -23,7 +23,7 @@ public class RecordController {
         return recordService.scan().intoResponseEntity();
     }
 
-    @GetMapping
+    @GetMapping("/records")
     public ResponseEntity<DataResult<List<RecordDto>>> getRecords() {
         return recordService.getRecords().intoResponseEntity();
     }

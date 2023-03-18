@@ -28,10 +28,12 @@ public class Mapper {
     }
 
     public RecordDto recordToRecordDto(Record record) {
+        Float potentialImpact = (float) record.getThreats().stream().mapToDouble(Threat::getPotentialImpact).average().orElse(0.0);
         return RecordDto.builder()
                 .id(record.getId())
                 .timestamp(record.getTimestamp())
                 .threats(threatsToThreatDtos(record.getThreats()))
+                .potentialImpact(round(potentialImpact,2))
                 .build();
     }
 

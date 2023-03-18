@@ -16,4 +16,5 @@ public class RecordDto {
     private Long id;
     private Date timestamp;
     private List<ThreatDto> threats;
+    private Float potentialImpact;
 }
