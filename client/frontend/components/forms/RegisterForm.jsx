@@ -1,11 +1,26 @@
 import { useForm } from "react-hook-form"
+import axios from "axios"
 
 export default function RegisterForm(props) {
     const {register, handleSubmit, formState: {errors}} = useForm()
     const onSubmit = (data) => {
-        props.handleShowVerify()
-        console.log(data)
+        const newData = {
+            "email" : data.email,
+            "password" : data.password,
+            "firstName" : data.name,
+            "lastName" : data.surname,
+            "phoneNumber" : data.phone
+        }
+        axios.post('http://localhost:8080/register/member', newData)
+        .then(response => {
+            if(response.status === 200) {
+                console.log(response)
+                console.log(response.data)
+                console.log(response.data.token)
+            }
+        })
         document.querySelector("#registration").classList.add("hidden")
+        props.handleShowVerify()
     }
 
     return(
@@ -18,11 +33,11 @@ export default function RegisterForm(props) {
                     <form class="space-y-4 md:space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <div>
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
-                            <input type="text" {...register('name')} name="name" id="name" placeholder="John" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
+                            <input type="text" {...register('name', {required: true})} name="name" id="name" placeholder="John" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
                         </div>
                         <div>
                             <label for="surname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Surname</label>
-                            <input type="text" {...register('surname')} name="surname" id="surname" placeholder="Doe" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
+                            <input type="text" {...register('surname', {required: true})} name="surname" id="surname" placeholder="Doe" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
                         </div>
                         <div>
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
@@ -30,7 +45,7 @@ export default function RegisterForm(props) {
                         </div>
                         <div>
                             <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your phone number</label>
-                            <input type="phone" {...register('phone')} name="phone" id="phone" placeholder="+385 97 1231231" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
+                            <input type="phone" {...register('phone', {required: true})} name="phone" id="phone" placeholder="+385 97 1231231" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
                         </div>
                         <div>
                             <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
