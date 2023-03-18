@@ -26,7 +26,7 @@ public class AlertController {
     }
 
     @PostMapping
-    public ResponseEntity<ActionResult> addAlert(CreateAlertRequest request) {
+    public ResponseEntity<ActionResult> addAlert(@RequestBody CreateAlertRequest request) {
         return alertService.addAlert(request).intoResponseEntity();
     }
 

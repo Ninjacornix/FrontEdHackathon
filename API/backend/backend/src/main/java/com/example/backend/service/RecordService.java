@@ -49,13 +49,14 @@ public class RecordService {
 
     private void checkAlerts(List<Threat> threats) {
         List<Alert> alerts = alertRepository.findAll();
+
         if(!alerts.isEmpty()) {
             for (Threat threat : threats) {
                 for (Alert alert : alerts) {
                     if (threat.getName().equals(alert.getData()) || threat.getSource().equals(alert.getData())) {
                         emailService.sendAlert(alert);
                     }
-                    if (alert.getName().equals("potentialImpact")) {
+                    else if (alert.getField().equals("potentialImpact")) {
                         if (threat.getPotentialImpact() > Float.parseFloat(alert.getData())) {
                             emailService.sendAlert(alert);
                         }
