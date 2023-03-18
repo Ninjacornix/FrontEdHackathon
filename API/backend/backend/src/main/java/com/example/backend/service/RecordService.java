@@ -18,10 +18,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,6 +48,21 @@ public class RecordService {
         RecordDto recordDto = mapper.recordToRecordDto(record);
         logger.info("Successfully scanned");
         return new DataResult<>(true, "Successfully scanned", recordDto);
+    }
+
+    public ActionResult scanCount() {
+        int random = getRandomNumber(0, 10);
+        List<Threat> threats = threatRepository.findRandom(random);
+        Record record = Record.builder()
+                .timestamp(new Date())
+                .threats(threats)
+                .build();
+
+        recordRepository.save(record);
+        Map<String, Integer> threatsCount = threats.stream().collect(Collectors.groupingBy(Threat::getSeverity, Collectors.summingInt(e -> 1)));
+        ThreatCountResult result = new ThreatCountResult(threatsCount, new Date());
+        logger.info("Successfully retrieved threats count");
+        return new DataResult<>(true, "Successfully retrieved threats count", result);
     }
 
 
@@ -95,6 +107,18 @@ public class RecordService {
         ThreatCountResult result = new ThreatCountResult(threatsCount, new Date());
         logger.info("Successfully retrieved threats count");
         return new DataResult<>(true, "Successfully retrieved threats count", result);
+    }
+
+
+    public ActionResult deleteRecord(Long id) {
+        Optional<Record> record = recordRepository.findById(id);
+        if(record.isEmpty()) {
+            logger.error("Record with id " + id + " not found");
+            return new ActionResult(false, "Record with id " + id + " not found");
+        }
+        recordRepository.deleteById(id);
+        logger.info("Successfully deleted record");
+        return new ActionResult(true, "Successfully deleted record");
     }
 }
 
