@@ -51,6 +51,7 @@ const Alerts = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  
   const [message,setMessage] = useState("");
   const [description,setDescription] = useState("");
   const [dangerLevel,setDangerLevel] = useState("");
@@ -181,6 +182,8 @@ const Alerts = () => {
             </Typography>
           </Box>
         </Modal>
+
+        
       </div>
     </>
   );
