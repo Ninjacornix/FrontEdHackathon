@@ -22,6 +22,7 @@ public class EmailService {
     private final JavaMailSender mailSender;
     private final ExecutorService executorService;
     private final MemberRepository memberRepository;
+    private static final Logger logger = LogManager.getLogger(RecordService.class);
 
     public EmailService(JavaMailSender mailSender, MemberRepository memberRepository) {
         this.mailSender = mailSender;
@@ -68,6 +69,7 @@ public class EmailService {
             helper.setTo(recipientAddress);
             executorService.execute(() -> mailSender.send(mimeMessage));
         }
+        logger.info("Alert sent to all users");
     }
 
     @SneakyThrows
@@ -79,6 +81,7 @@ public class EmailService {
         helper.setSubject(subject);
         helper.setFrom("evil.evaluators@gmail.com");
         mailSender.send(mimeMessage);
+        logger.info("Email sent to " + recipientAddress);
     }
 
     public String returnHTML(String confirmationURL){
