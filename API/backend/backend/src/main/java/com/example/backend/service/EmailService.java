@@ -3,7 +3,6 @@ package com.example.backend.service;
 import com.example.backend.domain.Alert;
 import com.example.backend.domain.Member;
 import com.example.backend.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -16,12 +15,17 @@ import java.util.concurrent.Executors;
 
 
 @Component
-@RequiredArgsConstructor
 public class EmailService {
 
     private final JavaMailSender mailSender;
     private final ExecutorService executorService;
     private final MemberRepository memberRepository;
+
+    public EmailService(JavaMailSender mailSender, MemberRepository memberRepository) {
+        this.mailSender = mailSender;
+        this.memberRepository = memberRepository;
+        this.executorService = Executors.newFixedThreadPool(10);
+    }
 
     @SneakyThrows
     public void sendConfirmationEmail(Member securityUser, String token) {

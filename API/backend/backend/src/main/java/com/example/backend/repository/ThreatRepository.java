@@ -14,5 +14,4 @@ public interface ThreatRepository extends JpaRepository<Threat, Long> {
     @Query(value = "SELECT * FROM threat ORDER BY RAND() limit ?1", nativeQuery = true)
     List<Threat> findRandom(int limit);
 
-    List<Alert> findByField(String name);
 }
