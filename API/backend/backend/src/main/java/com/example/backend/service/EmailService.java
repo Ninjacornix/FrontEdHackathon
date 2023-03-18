@@ -36,7 +36,7 @@ public class EmailService {
         helper.setText(body,true);
         helper.setTo("madzarmaksim@gmail.com");
         helper.setSubject(subject);
-        helper.setFrom("noreply@eestec.hr");
+        helper.setFrom("ian.balen6@gmail.com");
         mailSender.send(mimeMessage);
     }
     @SneakyThrows
@@ -52,7 +52,7 @@ public class EmailService {
         helper.setText(body,true);
         helper.setTo(recipientAddress);
         helper.setSubject(subject);
-        helper.setFrom("noreply@eestec.hr");
+        helper.setFrom("ian.balen6@gmail.com");
         mailSender.send(mimeMessage);
     }
 
@@ -68,7 +68,7 @@ public class EmailService {
         helper.setText(body,true);
         helper.setTo(recipientAddress);
         helper.setSubject(subject);
-        helper.setFrom("noreply@eestec.hr");
+        helper.setFrom("ian.balen6@gmail.com");
         mailSender.send(mimeMessage);
     }
 }
