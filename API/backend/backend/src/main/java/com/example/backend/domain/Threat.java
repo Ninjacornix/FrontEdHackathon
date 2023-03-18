@@ -19,6 +19,15 @@ public class Threat {
     private String severity;
     private String source;
     private Float potentialImpact;
+    private String deviceType;
     @ManyToMany(mappedBy = "threats")
     private List<Record> records;
+
+    public Threat(String name, String severity, String source, Float potentialImpact, String deviceType) {
+        this.name = name;
+        this.severity = severity;
+        this.source = source;
+        this.potentialImpact = potentialImpact;
+        this.deviceType = deviceType;
+    }
 }

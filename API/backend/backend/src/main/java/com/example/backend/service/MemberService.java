@@ -6,6 +6,8 @@ import com.example.backend.request.UpdateMemberRequest;
 import com.example.backend.result.ActionResult;
 import com.example.backend.result.DataResult;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +17,13 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private static final Logger logger = LogManager.getLogger(RecordService.class);
 
 
 
     public ActionResult deleteMember(Long id) {
         memberRepository.deleteById(id);
+        logger.info("Member deleted successfully");
         return new ActionResult(true, "Member deleted successfully");
     }
 
@@ -27,6 +31,7 @@ public class MemberService {
 
 
     public DataResult<List<Member>> getMembers() {
+        logger.info("Members found successfully");
         return new DataResult<>(true, "Members found successfully", memberRepository.findAll());
     }
 
@@ -53,10 +58,12 @@ public class MemberService {
             member.setPhoneNumber(request.getPhoneNumber());
         }
         memberRepository.save(member);
+        logger.info("Member updated successfully");
         return new ActionResult(true, "Member updated successfully");
     }
 
     public DataResult<Member> getMember(Long id) {
+        logger.info("Member found successfully");
         return new DataResult<>(true, "Member found successfully", memberRepository.findById(id).get());
     }
 }

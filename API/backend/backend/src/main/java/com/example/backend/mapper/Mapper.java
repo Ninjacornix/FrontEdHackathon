@@ -6,6 +6,7 @@ import com.example.backend.domain.dto.RecordDto;
 import com.example.backend.domain.dto.ThreatDto;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -15,9 +16,10 @@ public class Mapper {
         return ThreatDto.builder()
                 .id(threat.getId())
                 .name(threat.getName())
-                .potentialImpact(threat.getPotentialImpact())
+                .potentialImpact(round(threat.getPotentialImpact(),2))
                 .source(threat.getSource())
                 .severity(threat.getSeverity())
+                .deviceType(threat.getDeviceType())
                 .build();
     }
 
@@ -26,10 +28,18 @@ public class Mapper {
     }
 
     public RecordDto recordToRecordDto(Record record) {
+        Float potentialImpact = (float) record.getThreats().stream().mapToDouble(Threat::getPotentialImpact).average().orElse(0.0);
         return RecordDto.builder()
                 .id(record.getId())
                 .timestamp(record.getTimestamp())
                 .threats(threatsToThreatDtos(record.getThreats()))
+                .potentialImpact(round(potentialImpact,2))
                 .build();
+    }
+
+    private static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 }

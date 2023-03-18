@@ -30,7 +30,7 @@ public class MemberController {
     }
 
     @PutMapping
-    public ResponseEntity<ActionResult> updateMember(UpdateMemberRequest request) {
+    public ResponseEntity<ActionResult> updateMember(@RequestBody UpdateMemberRequest request) {
         return memberService.updateMember(request).intoResponseEntity();
     }
 
