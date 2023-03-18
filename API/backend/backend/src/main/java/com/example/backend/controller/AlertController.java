@@ -1,13 +1,16 @@
 package com.example.backend.controller;
 
+import com.example.backend.domain.Alert;
 import com.example.backend.requests.CreateAlertRequest;
+import com.example.backend.result.ActionResult;
+import com.example.backend.result.DataResult;
 import com.example.backend.service.AlertService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,13 +21,18 @@ public class AlertController {
 
 
     @DeleteMapping
-    public void deleteAlert(@RequestParam Long id) {
-        alertService.deleteAlert(id);
+    public ResponseEntity<ActionResult> deleteAlert(@RequestParam Long id) {
+        return alertService.deleteAlert(id).intoResponseEntity();
     }
 
     @PostMapping
-    public void addAlert(CreateAlertRequest request) {
-        alertService.addAlert(request);
+    public ResponseEntity<ActionResult> addAlert(CreateAlertRequest request) {
+        return alertService.addAlert(request).intoResponseEntity();
+    }
+
+    @GetMapping
+    public ResponseEntity<DataResult<List<Alert>>> getAlerts() {
+        return alertService.getAlerts().intoResponseEntity();
     }
 
 }

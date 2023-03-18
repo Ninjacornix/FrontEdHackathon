@@ -3,6 +3,8 @@ package com.example.backend.service;
 import com.example.backend.domain.Member;
 import com.example.backend.repository.MemberRepository;
 import com.example.backend.requests.UpdateMemberRequest;
+import com.example.backend.result.ActionResult;
+import com.example.backend.result.DataResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +18,19 @@ public class MemberService {
 
 
 
-    public void deleteMember(Long id) {
+    public ActionResult deleteMember(Long id) {
         memberRepository.deleteById(id);
+        return new ActionResult(true, "Member deleted successfully");
     }
 
 
 
 
-    public List<Member> getMembers() {
-        return memberRepository.findAll();
+    public DataResult<List<Member>> getMembers() {
+        return new DataResult<>(true, "Members found successfully", memberRepository.findAll());
     }
 
-    public void updateMember(UpdateMemberRequest request) {
+    public ActionResult updateMember(UpdateMemberRequest request) {
 
         Member member = memberRepository.findById(request.getId()).get();
 
@@ -50,9 +53,10 @@ public class MemberService {
             member.setPhoneNumber(request.getPhoneNumber());
         }
         memberRepository.save(member);
+        return new ActionResult(true, "Member updated successfully");
     }
 
-    public Member getMember(Long id) {
-        return memberRepository.findById(id).get();
+    public DataResult<Member> getMember(Long id) {
+        return new DataResult<>(true, "Member found successfully", memberRepository.findById(id).get());
     }
 }
