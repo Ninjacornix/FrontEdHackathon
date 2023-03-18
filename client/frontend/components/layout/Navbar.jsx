@@ -13,7 +13,7 @@ const Navbar = () => {
   return (
     <>
     
-    <div className='flex items-center justify-between px-8 py-4 bg-slate-900 font-sans'>
+    <div className='flex items-center justify-between px-8 py-4 dark:bg-gray-800 dark:border-gray-700 font-sans rounded'>
         <div>
             <h1 className='text-4xl font-bold font-mono'>CyberSecurity</h1>
         </div>

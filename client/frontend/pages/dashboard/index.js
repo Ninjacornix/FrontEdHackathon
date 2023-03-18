@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from '@/components/layout/Navbar'
 import { useRouter } from "next/router";
+import DashboardLayout from '@/components/layout/DashboardLayout'
 
 const Dashboard = () => {
   const router = useRouter();
@@ -12,7 +13,7 @@ const Dashboard = () => {
   return (
     <>
     <Navbar />
-    <div>Dashboard</div>
+      <DashboardLayout />
     </>
   )
 }
