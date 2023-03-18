@@ -4,6 +4,11 @@ import {useRouter} from 'next/router';
 
 const Navbar = () => {
     const router = useRouter()
+
+    const signOut = () => {
+      localStorage.removeItem('token')
+      router.push('/')
+    }
     
   return (
     <>
@@ -36,7 +41,7 @@ const Navbar = () => {
         <Link href="/info" className={`hover:border-b-2 ${router.pathname === "/info" ? "font-bold" : ""}`}>Info</Link>
       </li>
       <li>
-        <Link href="#" className='hover:border-b-2'>Sign Out</Link>
+        <button onClick={signOut} href="#" className='hover:border-b-2'>Sign Out</button>
       </li>
     </ul>
         </div>
