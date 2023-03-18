@@ -109,7 +109,8 @@ public class SecurityService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found!"));
 
         Random random = new Random();
-        String token = String.valueOf(random.nextInt(10000));
+        int randomNumber = random.nextInt(9000) + 1000;
+        String token = String.valueOf(randomNumber);
 
         verificationTokenRepository.save(new VerificationToken(token,securityUser));
 

@@ -33,3 +33,6 @@ yarn-error.log*
 
 #ds store
 .DS_Store
+
+# properties
+/API/backend/backend/src/main/resources/application.properties

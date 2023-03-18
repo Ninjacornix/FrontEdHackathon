@@ -15,5 +15,6 @@ public class ThreatDto {
     private String name;
     private String severity;
     private String source;
+    private String deviceType;
     private Float potentialImpact;
 }
