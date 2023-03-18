@@ -3,14 +3,13 @@ import axios from "axios"
 
 export default function LoginForm(props) {
     const {register, handleSubmit, formState: {errors}} = useForm()
+    const headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+    }
     const onSubmit = (data) => {
-        console.log(data)
-        const newData = {
-            "email": data.email
-        }
-        axios.post('http://localhost:8080/loginCode', newData).then(res => {
-            console.log(res)
-            if (res.data === "success") {
+        axios.post(`http://localhost:8080/loginCode?email=${data.email}`, {headers}).then(res => {
+            if (res.status === 200) {
                 props.handleShowVerify()
                 document.querySelector("#login").classList.add("hidden")
                 props.handleIncomingData(data)

@@ -14,15 +14,14 @@ export default function Login() {
 
     const handleIncomingData = (data) => {
         console.log(data);
-        setEmail(email);
-        setPassword(password);
-        setCode(code);
+        setEmail(data.email);
+        setPassword(data.password);
     }
 
     return (
         <>
             <LoginForm handleShowVerify={handleShowVerify} handleIncomingData={handleIncomingData}/>
-            <VerifyForm showVerify={showVerify}/>
+            <VerifyForm showVerify={showVerify} email={email} password={password}/>
         </>
     )
 }
