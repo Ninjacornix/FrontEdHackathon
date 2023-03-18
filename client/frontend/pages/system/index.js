@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "@/components/layout/Navbar";
 import { AiFillDelete } from "react-icons/ai";
 import { AiOutlinePlus } from "react-icons/ai";
-import {AiFillEdit} from "react-icons/ai"
+import { AiFillEdit } from "react-icons/ai";
 import { useState } from "react";
 import {
   TextField,
@@ -44,11 +44,9 @@ const System = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [userId,setUserId] = useState(0);
+  const [userId, setUserId] = useState(0);
 
   const handleEdit = (userId) => {
-    
-
     const editUser = {
       id: userId,
       firstName: firstName,
@@ -89,7 +87,6 @@ const System = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
 
     const newUser = {
       id: users.length + 1,
@@ -99,8 +96,7 @@ const System = () => {
       email,
       role,
       phoneNumber,
-      active:true
-
+      active: true,
     };
 
     setUsers([...users, newUser]);
@@ -111,7 +107,6 @@ const System = () => {
     setRole("");
     setPhoneNumber("");
     handleEditClose();
-    
   };
 
   //edit
@@ -121,10 +116,8 @@ const System = () => {
 
   const handleEditUser = (user) => {
     handleEditOpen();
-    setUserId(user.id)
-  }
-
-  
+    setUserId(user.id);
+  };
 
   return (
     <>
@@ -137,11 +130,12 @@ const System = () => {
           onClick={handleOpen}
           className="flex items-center justify-center p-4 w-2/6 m-auto h-16 border-solid border-2 rounded border-slate-500 text-white bold bg-slate-500 gap-2"
         >
-          ADD USER <AiOutlinePlus className=""/>
+          ADD USER <AiOutlinePlus className="" />
         </button>
         <div className="my-12">
           {users.map((user) => (
-            <div key={user.id}
+            <div
+              key={user.id}
               className={` my-8 p-4 rounded text-white bg-slate-800
               )}`}
             >
@@ -150,19 +144,15 @@ const System = () => {
                   {user.firstName}{" "}
                 </h2>
                 <div className="">
-                <IconButton onClick={() => deleteUser(user.id)}>
-                  <AiFillDelete
-                    className="text-3xl text-white"
-                    
-                  />
-                </IconButton>
-                <IconButton >
-                  <AiFillEdit
-                    className="text-3xl text-white"
-                    onClick={() => handleEditUser(user)}
-                    
-                  />
-                </IconButton>
+                  <IconButton onClick={() => deleteUser(user.id)}>
+                    <AiFillDelete className="text-3xl text-white" />
+                  </IconButton>
+                  <IconButton>
+                    <AiFillEdit
+                      className="text-3xl text-white"
+                      onClick={() => handleEditUser(user)}
+                    />
+                  </IconButton>
                 </div>
               </div>
               <p>{user.description}</p>
@@ -242,9 +232,6 @@ const System = () => {
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
               <br />
-
-              
-              
 
               <br />
               <Button variant="contained" onClick={handleSubmit}>
@@ -326,9 +313,6 @@ const System = () => {
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
               <br />
-
-              
-              
 
               <br />
               <Button variant="contained" onClick={() => handleEdit(userId)}>
