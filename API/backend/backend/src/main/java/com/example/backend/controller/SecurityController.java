@@ -29,7 +29,7 @@ public class SecurityController {
         return securityService.confirmEmail(token).intoResponseEntity();
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<ActionResult> login(@PathParam("code") String code) {
         return securityService.login(code).intoResponseEntity();
     }
