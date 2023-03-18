@@ -1,7 +1,6 @@
-package com.example.backend.requests;
+package com.example.backend.request;
 
 
-import jdk.jfr.DataAmount;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +15,6 @@ public class CreateAlertRequest {
     private String field;
     private String description;
     private String data;
-
+    private String name;
 
 }

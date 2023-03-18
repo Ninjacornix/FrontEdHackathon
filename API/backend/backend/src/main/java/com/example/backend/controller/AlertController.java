@@ -1,7 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.domain.Alert;
-import com.example.backend.requests.CreateAlertRequest;
+import com.example.backend.request.CreateAlertRequest;
 import com.example.backend.result.ActionResult;
 import com.example.backend.result.DataResult;
 import com.example.backend.service.AlertService;

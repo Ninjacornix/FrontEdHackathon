@@ -1,7 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.domain.Member;
-import com.example.backend.requests.UpdateMemberRequest;
+import com.example.backend.request.UpdateMemberRequest;
 import com.example.backend.result.ActionResult;
 import com.example.backend.result.DataResult;
 import com.example.backend.service.MemberService;

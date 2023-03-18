@@ -15,8 +15,9 @@ import javax.persistence.*;
 public class Alert {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    //@Column(name = "id", nullable = false)
     private Long id;
+    private String description;
+    private String name;
     private String field;
     private String data;
 
