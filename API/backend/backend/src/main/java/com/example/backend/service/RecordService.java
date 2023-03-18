@@ -11,6 +11,8 @@ import com.example.backend.repository.RecordRepository;
 import com.example.backend.repository.ThreatRepository;
 import com.example.backend.result.DataResult;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,9 +28,10 @@ public class RecordService {
     private final Mapper mapper;
     private final EmailService emailService;
     private final AlertRepository alertRepository;
+    private static final Logger logger = LogManager.getLogger(RecordService.class);
 
     public DataResult<RecordDto> scan() {
-        int random = getRandomNumber(0, 3);
+        int random = getRandomNumber(0, 10);
         List<Threat> threats = threatRepository.findRandom(random);
         Record record = Record.builder()
                 .timestamp(new Date())
@@ -40,6 +43,7 @@ public class RecordService {
         checkAlerts(threats);
 
         RecordDto recordDto = mapper.recordToRecordDto(record);
+        logger.info("Successfully scanned");
         return new DataResult<>(true, "Successfully scanned", recordDto);
     }
 
@@ -50,6 +54,7 @@ public class RecordService {
         for(Record r : records){
             recordDtos.add(mapper.recordToRecordDto(r));
         }
+        logger.info("Successfully retrieved records");
         return new DataResult<>(true, "Successfully retrieved records", recordDtos);
     }
 
