@@ -42,4 +42,5 @@ public class AlertService {
         logger.info("Alerts fetched successfully");
         return new DataResult<>(true, "Alerts fetched successfully", alertRepository.findAll());
     }
+
 }
