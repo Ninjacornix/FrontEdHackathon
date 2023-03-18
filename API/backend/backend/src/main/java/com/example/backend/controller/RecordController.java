@@ -1,14 +1,14 @@
 package com.example.backend.controller;
 
 import com.example.backend.domain.dto.RecordDto;
+import com.example.backend.result.ActionResult;
 import com.example.backend.result.DataResult;
 import com.example.backend.service.RecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Map;
 
@@ -24,9 +24,19 @@ public class RecordController {
         return recordService.scan().intoResponseEntity();
     }
 
+    @GetMapping("/scan/count")
+    public ResponseEntity<DataResult<?>> scanCount() {
+        return recordService.scanCount().intoResponseEntity();
+    }
+
     @GetMapping("/records")
     public ResponseEntity<DataResult<List<RecordDto>>> getRecords() {
         return recordService.getRecords().intoResponseEntity();
+    }
+
+    @DeleteMapping("/records/{id}")
+    public ResponseEntity<ActionResult> deleteRecord(@PathVariable("id") Long id) {
+        return recordService.deleteRecord(id).intoResponseEntity();
     }
 
     @GetMapping("/threats/count")
