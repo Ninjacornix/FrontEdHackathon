@@ -2,8 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.domain.Alert;
 import com.example.backend.repository.AlertRepository;
-import com.example.backend.repository.MemberRepository;
-import com.example.backend.requests.CreateAlertRequest;
+import com.example.backend.request.CreateAlertRequest;
 import com.example.backend.result.ActionResult;
 import com.example.backend.result.DataResult;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +19,8 @@ public class AlertService {
     public ActionResult addAlert(CreateAlertRequest request) {
         Alert alert = Alert
                 .builder()
+                .name(request.getName())
+                .description(request.getDescription())
                 .data(request.getData())
                 .field(request.getField())
                 .build();

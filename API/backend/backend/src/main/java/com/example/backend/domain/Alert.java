@@ -15,10 +15,20 @@ import javax.persistence.*;
 public class Alert {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    //@Column(name = "id", nullable = false)
     private Long id;
+    private String description;
+    private String name;
     private String field;
     private String data;
 
-
+    @Override
+    public String toString() {
+        return "Alert{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", name='" + name + '\'' +
+                ", field='" + field + '\'' +
+                ", data='" + data + '\'' +
+                '}';
+    }
 }

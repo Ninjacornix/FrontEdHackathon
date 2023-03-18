@@ -2,7 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.domain.Member;
 import com.example.backend.repository.MemberRepository;
-import com.example.backend.requests.UpdateMemberRequest;
+import com.example.backend.request.UpdateMemberRequest;
 import com.example.backend.result.ActionResult;
 import com.example.backend.result.DataResult;
 import lombok.RequiredArgsConstructor;

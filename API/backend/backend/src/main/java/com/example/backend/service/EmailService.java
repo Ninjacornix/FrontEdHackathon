@@ -1,6 +1,8 @@
 package com.example.backend.service;
 
+import com.example.backend.domain.Alert;
 import com.example.backend.domain.Member;
+import com.example.backend.repository.MemberRepository;
 import lombok.SneakyThrows;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -17,10 +19,12 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
     private final ExecutorService executorService;
+    private final MemberRepository memberRepository;
 
-    public EmailService(JavaMailSender mailSender) {
+    public EmailService(JavaMailSender mailSender, MemberRepository memberRepository) {
         this.mailSender = mailSender;
-        executorService = Executors.newFixedThreadPool(10);
+        this.memberRepository = memberRepository;
+        this.executorService = Executors.newFixedThreadPool(10);
     }
 
     @SneakyThrows
@@ -70,5 +74,23 @@ public class EmailService {
         helper.setSubject(subject);
         helper.setFrom("ian.balen6@gmail.com");
         mailSender.send(mimeMessage);
+    }
+
+    @SneakyThrows
+    public void sendAlert(Alert alert) {
+        List<Member> members = memberRepository.findAll();
+        List<String> recipientAddresses = members.stream().map(Member::getEmail).toList();
+        String subject = "Alert";
+        String body = alert.toString();
+
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+        helper.setText(body,true);
+        helper.setSubject(subject);
+        helper.setFrom("ian.balen6@gmail.com");
+        for (String recipientAddress : recipientAddresses) {
+            helper.setTo(recipientAddress);
+            executorService.execute(() -> mailSender.send(mimeMessage));
+        }
     }
 }
