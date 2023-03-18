@@ -4,26 +4,35 @@ import com.example.backend.domain.Alert;
 import com.example.backend.repository.AlertRepository;
 import com.example.backend.repository.MemberRepository;
 import com.example.backend.requests.CreateAlertRequest;
+import com.example.backend.result.ActionResult;
+import com.example.backend.result.DataResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AlertService {
 
     private final AlertRepository alertRepository;
-    private final MemberRepository memberRepository;
 
-    public void addAlert(CreateAlertRequest request) {
+    public ActionResult addAlert(CreateAlertRequest request) {
         Alert alert = Alert
                 .builder()
                 .data(request.getData())
                 .field(request.getField())
                 .build();
         alertRepository.save(alert);
+        return new ActionResult(true, "Alert added successfully");
     }
 
-    public void deleteAlert(Long id) {
+    public ActionResult deleteAlert(Long id) {
         alertRepository.deleteById(id);
+        return new ActionResult(true, "Alert deleted successfully");
+    }
+
+    public DataResult<List<Alert>> getAlerts() {
+        return new DataResult<>(true, "Alerts found successfully", alertRepository.findAll());
     }
 }
