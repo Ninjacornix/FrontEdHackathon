@@ -1,13 +1,13 @@
 package com.example.backend.controller;
 
-import com.example.backend.service.UserService;
+import com.example.backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
 @Controller
 @RequiredArgsConstructor
-public class UserController {
+public class MemberController {
 
-    private final UserService userService;
+    private final MemberService memberService;
 
 }
