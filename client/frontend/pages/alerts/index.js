@@ -84,12 +84,12 @@ const Alerts = () => {
     setDescription("");
     setDangerLevel("");
     handleClose();
-    console.log(alerts);
+    
   };
 
   const deleteAlert = (id) => {
     setAlerts(alerts.filter((alert) => alert.id !== id));
-    console.log(alerts);
+    
   };
 
   return (
@@ -101,7 +101,7 @@ const Alerts = () => {
         </h1>
         <button
           onClick={handleOpen}
-          className="flex items-center justify-center p-4 w-2/6 m-auto h-16 border-solid border-2 rounded border-red-100 text-black bg-red-100"
+          className="flex items-center justify-center p-4 w-2/6 m-auto h-16 border-solid border-2 rounded border-red-100 text-black bg-red-100 gap-2"
         >
           ADD ALERT <AiOutlinePlus />
         </button>
