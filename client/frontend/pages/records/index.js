@@ -3,7 +3,8 @@ import Navbar from "@/components/layout/Navbar";
 import { AiFillDelete } from "react-icons/ai";
 import { AiOutlinePlus } from "react-icons/ai";
 import { AiFillEye } from "react-icons/ai";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import axios from "axios";
 import {
   TextField,
   Box,
@@ -60,7 +61,7 @@ const Records = () => {
       },
   ];
 
-  const [records, setRecords] = useState(dummyRecords);
+  const [records, setRecords] = useState([]);
 
   
   //Modal
@@ -71,7 +72,7 @@ const Records = () => {
   const [source,setSource] = useState("");
   const [severity,setSeverity] = useState("");
   const [potentialImpact,setPotentialImpact] = useState("");
-  const [index,setIndex] = useState(0);
+  const [index,setIndex] = useState(-1);
 
   const style = {
     position: "absolute",
@@ -117,6 +118,32 @@ const Records = () => {
     
   };
 
+  
+
+  const fetchRecordsData = () => {
+    axios.get("http://localhost:8080/records").then((response) => {
+      setRecords(response.data);
+    });
+  };
+
+  useEffect(() => {
+    fetchRecordsData();
+  },[]);
+
+  console.log(records.data);
+
+  const dangerLevel = (level) => {
+    if(level > 0 && level <= 33){
+      return 'bg-sky-500'
+    }else if(level > 33 && level <= 66){
+      return 'bg-yellow-500'
+    }else{
+      return 'bg-red-500'
+    }
+  }
+
+  
+
   return (
     <>
       <Navbar />
@@ -131,16 +158,16 @@ const Records = () => {
           ADD RECORD <AiOutlinePlus />
         </button>
         <div className="my-12">
-          {records.map((record) => (
+          {records.data && records.data.map((record) => (
             <div key={record.id}
-              className={` my-8 p-4 rounded text-black bg-sky-500`}
+              className={` my-8 p-4 rounded text-black ${dangerLevel(record.potentialImpact * 100)}`}
             >
               <div className="flex items-center justify-between">
-                <div className="text-3xl"><IconButton onClick={() => setIndex(record.id)}><AiFillEye /></IconButton></div>
+                <div className="text-3xl"><IconButton onClick={() => index === record.id ? -1 : setIndex(record.id)}><AiFillEye /></IconButton></div>
                 <h2 className="text-3xl w-3/6 font-bold font-mono">
-                  {record.name}{" "}
+                {"Record "}{record.id}
                 </h2>
-                <p>{record.time}</p>
+                <p>{record.timestamp}</p>
                 <IconButton onClick={() => deleteRecord(record.id)}>
                   <AiFillDelete
                     className="text-3xl"
@@ -149,16 +176,18 @@ const Records = () => {
                 </IconButton>
               </div>
               {index === record.id && <div>
-              <div className="flex my-4 items-center justify-center text-center">
-                <h3 className="flex-1">Source</h3>
-                <h3 className="flex-1">Severity</h3>
-                <h3 className="flex-1">PotentialImpact</h3>
-              </div>
-              <div className="flex my-4 text-center">
-                <p className="flex-1">{record.source}</p>
-                <p className="flex-1">{record.severity}</p>
-                <p className="flex-1">{record.potentialImpact}</p>
-              </div>
+                {record.threats.map((threat) => <div className="border-b-2 py-2">
+                    <div className="flex my-4 ">
+                      <h3 className="flex-1 text-center">Name:</h3>
+                      <h3 className="flex-1 text-center">Source:</h3>
+                      <h3 className="flex-1 text-center">Severity:</h3>
+                    </div>
+                    <div className="flex">
+                      <p className="flex-1 text-center">{threat.name}</p>
+                      <p className="flex-1 text-center">{threat.source}</p>
+                      <p className="flex-1 text-center">{threat.severity}</p>
+                    </div>
+                  </div>) }
               </div>}
               
             </div>
