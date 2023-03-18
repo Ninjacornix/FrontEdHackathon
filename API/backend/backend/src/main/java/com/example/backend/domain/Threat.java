@@ -1,11 +1,16 @@
 package com.example.backend.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class Threat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,4 +19,6 @@ public class Threat {
     private String severity;
     private String source;
     private Float potentialImpact;
+    @ManyToMany(mappedBy = "threats")
+    private List<Record> records;
 }
