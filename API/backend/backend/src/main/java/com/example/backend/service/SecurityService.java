@@ -45,6 +45,7 @@ public class SecurityService {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .role("ROLE_MEMBER")
+                .minorAlert(request.isMinorAlert())
                 .phoneNumber(request.getPhoneNumber())
                 .active(false)
                 .build();

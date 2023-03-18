@@ -1,7 +1,9 @@
 package com.example.backend.mapper;
 
+import com.example.backend.domain.Member;
 import com.example.backend.domain.Record;
 import com.example.backend.domain.Threat;
+import com.example.backend.domain.dto.MemberDto;
 import com.example.backend.domain.dto.RecordDto;
 import com.example.backend.domain.dto.ThreatDto;
 import org.springframework.stereotype.Component;
@@ -25,6 +27,14 @@ public class Mapper {
 
     public List<ThreatDto> threatsToThreatDtos(List<Threat> threats) {
         return threats.stream().map(this::threatToThreatDto).toList();
+    }
+
+    public MemberDto memberToMemberDto(Member member) {
+        return MemberDto.builder()
+                .email(member.getEmail())
+                .firstName(member.getFirstName())
+                .lastName(member.getLastName())
+                .build();
     }
 
     public RecordDto recordToRecordDto(Record record) {

@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.domain.Member;
+import com.example.backend.domain.dto.MemberDto;
 import com.example.backend.request.UpdateMemberRequest;
 import com.example.backend.result.ActionResult;
 import com.example.backend.result.DataResult;
@@ -25,7 +26,7 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<DataResult<List<Member>>> getMembers() {
+    public ResponseEntity<DataResult<List<MemberDto>>> getMembers() {
         return memberService.getMembers().intoResponseEntity();
     }
 
@@ -35,8 +36,8 @@ public class MemberController {
     }
 
     @GetMapping("/member")
-    public ResponseEntity<DataResult<Member>> getMember(@RequestParam Long id) {
-        return memberService.getMember(id).intoResponseEntity();
+    public ResponseEntity<DataResult<MemberDto>> getMember() {
+        return memberService.getMember().intoResponseEntity();
     }
 
 

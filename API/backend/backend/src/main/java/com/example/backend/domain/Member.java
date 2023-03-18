@@ -25,6 +25,7 @@ public class Member {
     private String password;
     private String role;
     private String phoneNumber;
+    private boolean minorAlert;
     private Boolean active;
     @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private VerificationToken verificationToken;
