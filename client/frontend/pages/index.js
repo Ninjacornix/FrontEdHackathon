@@ -1,8 +1,8 @@
 import React from 'react'
 import {Canvas, useFrame} from '@react-three/fiber'
 
-import RotatingStars from '../components/3d/rotatingStars'
-import LandingPageNavbar from '../components/layout/landingPageNavbar'
+import RotatingStars from '../components/3d/RotatingStars'
+import LandingPageNavbar from '../components/layout/LandingPageNavbar'
 
 export default function Home() {
   return (

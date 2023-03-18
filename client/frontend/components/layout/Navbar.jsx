@@ -4,7 +4,6 @@ import {useRouter} from 'next/router';
 
 const Navbar = () => {
     const router = useRouter()
-
     const handleSignOut = () => {
         localStorage.removeItem('token')
         router.push('/')
