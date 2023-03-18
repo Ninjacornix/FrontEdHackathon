@@ -97,7 +97,7 @@ public class SecurityService {
             memberRepository.deleteByEmail(securityUser.getEmail());
             return new ActionResult(false, "Verification token has expired!");
         }
-        return new ActionResult(true,"Successfully sent login email!");
+        return new ActionResult(true,"Successfully logged in!");
     }
 
     public ActionResult sendCode(String email) {
