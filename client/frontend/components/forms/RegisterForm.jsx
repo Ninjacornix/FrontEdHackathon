@@ -3,6 +3,10 @@ import axios from "axios"
 
 export default function RegisterForm(props) {
     const {register, handleSubmit, formState: {errors}} = useForm()
+    const headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+    }
     const onSubmit = (data) => {
         const newData = {
             "email" : data.email,
@@ -11,16 +15,18 @@ export default function RegisterForm(props) {
             "lastName" : data.surname,
             "phoneNumber" : data.phone
         }
-        axios.post('http://localhost:8080/register/member', newData)
+        axios.post('http://localhost:8080/register/member', newData, {headers})
         .then(response => {
             if(response.status === 200) {
                 console.log(response)
                 console.log(response.data)
                 console.log(response.data.token)
+                document.querySelector("#registration").classList.add("hidden")
+                props.handleShowVerify()
+            } else {
+                alert("Something went wrong")
             }
         })
-        document.querySelector("#registration").classList.add("hidden")
-        props.handleShowVerify()
     }
 
     return(
