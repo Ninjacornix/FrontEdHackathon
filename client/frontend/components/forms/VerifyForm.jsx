@@ -5,17 +5,16 @@ import axios from "axios"
 export default function VerifyForm(props) {
     const {register, handleSubmit, formState: {errors}} = useForm()
     const router = useRouter()
+    const headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+    }
     const onSubmit = (data) => {
-        console.log(data)
-
-        axios.post(`http://localhost:8080/verifyCode?code=${data.verify}`, {headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-        }, auth: {
-            username: props.email,
-            password: props.password
-        }}).then(res => {
+        axios.post(`http://localhost:8080/login?code=${data.verify}`, {}, {auth: {username: props.email, password: props.password}}
+        ).then(res => {
             if (res.status === 200) {
+                const token = res.headers.getAuthorization()
+                localStorage.setItem('token', token)
                 router.push('/dashboard')
             } else {
                 alert("Incorrect code")

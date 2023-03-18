@@ -12,9 +12,13 @@ export default function Register() {
         router.push("/login");
     }
 
-    return (
-        <>
-            <RegisterForm handleShowVerify={handleShowVerify}/>
-        </>
-    )
+    if(localStorage.getItem("token") == null) {
+        return (
+            <>
+                <RegisterForm handleShowVerify={handleShowVerify}/>
+            </>
+        )
+    } else {
+        router.push("/dashboard");
+    }
 }
