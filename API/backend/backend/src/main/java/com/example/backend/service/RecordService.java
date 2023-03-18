@@ -31,7 +31,7 @@ public class RecordService {
     private static final Logger logger = LogManager.getLogger(RecordService.class);
 
     public DataResult<RecordDto> scan() {
-        int random = getRandomNumber(0, 3);
+        int random = getRandomNumber(0, 10);
         List<Threat> threats = threatRepository.findRandom(random);
         Record record = Record.builder()
                 .timestamp(new Date())
