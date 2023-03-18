@@ -115,6 +115,6 @@ public class SecurityService {
         verificationTokenRepository.save(new VerificationToken(token,securityUser));
 
         emailService.sendCode(securityUser,token);
-        return new ActionResult(true, "Confirmation mail successfully sent!");
+        return new ActionResult(true, "Login code successfully sent!");
     }
 }
