@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class RecordController {
 
     private final RecordService recordService;
-//
-//    @GetMapping("/scan")
-//    public DataResult<?> scan() {
-//        return recordService.scan();
-//    }
+
+    @GetMapping("/scan")
+    public DataResult<?> scan() {
+        return recordService.scan();
+    }
 }

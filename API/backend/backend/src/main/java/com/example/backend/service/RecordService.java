@@ -26,41 +26,43 @@ public class RecordService {
     private final EmailService emailService;
     private final AlertRepository alertRepository;
 
-//    public DataResult<?> scan() {
-//        int random = getRandomNumber(0, 3);
-//        List<Threat> threats = threatRepository.findRandom(random);
-//        Record record = Record.builder()
-//                .timestamp(new Date())
-//                .threats(threats)
-//                .build();
-//
-//        recordRepository.save(record);
-//
-//        checkAlerts(threats);
-//
-//        RecordDto recordDto = mapper.recordToRecordDto(record);
-//        return new DataResult<>(true, "Successfully scanned", recordDto);
-//    }
+    public DataResult<?> scan() {
+        int random = getRandomNumber(0, 3);
+        List<Threat> threats = threatRepository.findRandom(random);
+        Record record = Record.builder()
+                .timestamp(new Date())
+                .threats(threats)
+                .build();
+
+        recordRepository.save(record);
+
+        checkAlerts(threats);
+
+        RecordDto recordDto = mapper.recordToRecordDto(record);
+        return new DataResult<>(true, "Successfully scanned", recordDto);
+    }
 
 
     public int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
 
-//    private void checkAlerts(List<Threat> threats) {
-//        List<Alert> alerts = alertRepository.findAll();
-//        if(!alerts.isEmpty()) {
-//            for (Threat threat : threats) {
-//                for (Alert alert : alerts) {
-//                    if(threat.getName().equals(alert.getData()) || threat.getSource().equals(alert.getData() ||)
-//                        emailService.sendAlert(alert);
-//                    }
-//                    if(threat.getSeverity().equals(alert.getData())) {
-//                        emailService.sendAlert(alert);
-//                    }
-//                }
-//            }
-//        }
-
+    private void checkAlerts(List<Threat> threats) {
+        List<Alert> alerts = alertRepository.findAll();
+        if(!alerts.isEmpty()) {
+            for (Threat threat : threats) {
+                for (Alert alert : alerts) {
+                    if (threat.getName().equals(alert.getData()) || threat.getSource().equals(alert.getData())) {
+                        emailService.sendAlert(alert);
+                    }
+                    if (alert.getName().equals("potentialImpact")) {
+                        if (threat.getPotentialImpact() > Float.parseFloat(alert.getData())) {
+                            emailService.sendAlert(alert);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
