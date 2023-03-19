@@ -30,9 +30,7 @@ const Navbar = () => {
       <li>
         <Link href="/alerts" className={`hover:border-b-2 ${router.pathname === "/alerts" ? "font-bold" : ""}`}>Alerts</Link>
       </li>
-      <li>
-        <Link href="/reports" className={`hover:border-b-2 ${router.pathname === "/reports" ? "font-bold" : ""}`}>Reports</Link>
-      </li>
+      
       <li>
         <Link href="/system" className={`hover:border-b-2 ${router.pathname === "/system" ? "font-bold" : ""}`}>System</Link>
       </li>

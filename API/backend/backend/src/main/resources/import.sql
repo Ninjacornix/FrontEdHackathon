@@ -20,7 +20,10 @@
 
 
 
---insert into Member(id, first_Name, last_Name, email, password, role, phone_number, minor_Alert, active) values (10, 'Maksim', 'Madzar', 'madzarmaksim@gmail.com', 'pass', 'ROLE_ADMIN', '0911986574', TRUE, TRUE);
+insert into Member(id, first_Name, last_Name, email, password, role, phone_Number, minor_Alert, active) values (10, 'Ian', 'Balen', 'ian.balen6@gmail.com', 'yoyo', 'ROLE_MEMBER', '0919456128', FALSE, TRUE);
+insert into Member(id, first_Name, last_Name, email, password, role, phone_Number, minor_Alert, active) values (20, 'Maksim', 'Madzar', 'madzarmaksim@gmail.com', 'pass', 'ROLE_ADMIN', '0911986574', TRUE, TRUE);
+insert into Member(id, first_Name, last_Name, email, password, role, phone_Number, minor_Alert, active) values (30, 'Ivo', 'Barbaric', 'ivo.barbaric123@gmail.com', '132156198', 'ROLE_MEMBER', '098730992', FALSE, TRUE);
+insert into Member(id, first_Name, last_Name, email, password, role, phone_Number, minor_Alert, active) values (40, 'Pero', 'Mandrikovic', 'mandrikovic.pero@gmail.com', 'kurrrrrac', 'ROLE_MEMBER', '099941654', TRUE, TRUE);
 
 --insert into Alert(id, description, name, field, data, minor_Alert) values (1, 'This is a test alert', 'Test Alert', 'potentialImpact', '0.9', TRUE);
 
