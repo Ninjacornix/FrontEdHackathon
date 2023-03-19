@@ -1,11 +1,19 @@
+import Alerts from "./Alerts"
+import ChartLayout from "./ChartLayout"
+import Records from "./Records"
+import UserInfo from "./UserInfo"
+
 export default function Dashboard() {
-    // make dashboard
     return (
-        <div className="container grid grid-cols-2 gap-4 w-screen">
-            <div>h1</div>
-            <div>h2</div>
-            <div>h3</div>
-            <div>h4</div>
+        <div className="flex flex-row gap-4 w-screen h-screen justify-end p-4">
+            <div className="flex flex-col w-1/2">
+                <Alerts className="mb-8"/>
+                <UserInfo />
+            </div>
+            <div className="flex flex-col w-1/2">
+                <ChartLayout />
+                <Records />
+            </div>
         </div>
     )
 }
