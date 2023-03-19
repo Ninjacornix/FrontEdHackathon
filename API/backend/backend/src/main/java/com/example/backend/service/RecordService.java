@@ -5,6 +5,7 @@ import com.example.backend.domain.Record;
 import com.example.backend.domain.Threat;
 import com.example.backend.domain.dto.RecordDto;
 import com.example.backend.domain.dto.ThreatDto;
+import com.example.backend.exception.BadRequestException;
 import com.example.backend.mapper.Mapper;
 import com.example.backend.repository.AlertRepository;
 import com.example.backend.repository.RecordRepository;
@@ -12,11 +13,14 @@ import com.example.backend.repository.ThreatRepository;
 import com.example.backend.result.ActionResult;
 import com.example.backend.result.DataResult;
 import com.example.backend.result.ThreatCountResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -119,6 +123,26 @@ public class RecordService {
         recordRepository.deleteById(id);
         logger.info("Successfully deleted record");
         return new ActionResult(true, "Successfully deleted record");
+    }
+
+    public DataResult<?> getRecord(Long id) {
+        Record record = recordRepository.findById(id).
+                orElseThrow(() -> {
+                    logger.error("Record with id " + id + " not found");
+                    return new BadRequestException("Record with id " + id + " not found");
+                });
+        RecordDto recordDto = mapper.recordToRecordDto(record);
+        logger.info("Successfully retrieved record");
+        return new DataResult<>(true, "Successfully retrieved record", recordDto);
+    }
+
+    @SneakyThrows
+    public ActionResult addRecordFromFile(MultipartFile file) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Record record = objectMapper.readValue(file.getInputStream(), Record.class);
+        recordRepository.save(record);
+        logger.info("Successfully added record");
+        return new ActionResult(true, "Successfully added record");
     }
 }
 
