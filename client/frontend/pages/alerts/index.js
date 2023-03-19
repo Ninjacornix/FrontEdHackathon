@@ -95,7 +95,7 @@ const Alerts = () => {
 
     // setAlerts([...alerts, newAlert]);
     axios
-      .post("http://localhost:8080/alert/", newAlert)
+      .post("https://evil-evaluators-spring-evil-evaluators-3.azuremicroservices.io/alert/", newAlert)
       .then((response) => {
         console.log(response.data);
       })
@@ -110,11 +110,11 @@ const Alerts = () => {
   };
 
   const deleteAlert = (id) => {
-    axios.delete("http://localhost:8080/alert/?id=" + id).then();
+    axios.delete("https://evil-evaluators-spring-evil-evaluators-3.azuremicroservices.io/alert/?id=" + id).then();
   };
 
   const fetchAlertsData = () => {
-    axios.get("http://localhost:8080/alert").then((response) => {
+    axios.get("https://evil-evaluators-spring-evil-evaluators-3.azuremicroservices.io/alert").then((response) => {
       setAlerts(response.data);
     });
   };

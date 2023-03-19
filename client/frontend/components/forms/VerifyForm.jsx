@@ -10,7 +10,7 @@ export default function VerifyForm(props) {
         'Access-Control-Allow-Origin': '*',
     }
     const onSubmit = (data) => {
-        axios.post(`http://localhost:8080/login?code=${data.verify}`, {}, {auth: {username: props.email, password: props.password}}
+        axios.post(`https://evil-evaluators-spring-evil-evaluators-3.azuremicroservices.io/login?code=${data.verify}`, {}, {auth: {username: props.email, password: props.password}}
         ).then(res => {
             if (res.status === 200) {
                 const token = res.headers.getAuthorization()

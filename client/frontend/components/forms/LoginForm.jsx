@@ -8,7 +8,7 @@ export default function LoginForm(props) {
         'Access-Control-Allow-Origin': '*',
     }
     const onSubmit = (data) => {
-        axios.post(`http://localhost:8080/loginCode?email=${data.email}`, {headers}).then(res => {
+        axios.post(`https://evil-evaluators-spring-evil-evaluators-3.azuremicroservices.io/loginCode?email=${data.email}`, {headers}).then(res => {
             if (res.status === 200) {
                 props.handleShowVerify()
                 document.querySelector("#login").classList.add("hidden")

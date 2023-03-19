@@ -10,9 +10,11 @@ export default function UserInfo() {
     const [phoneNumber, setPhoneNumber] = React.useState("")
 
     React.useEffect(() => {
-        axios.get('http://localhost:8080/member', {
+        axios.get('https://evil-evaluators-spring-evil-evaluators-3.azuremicroservices.io/member', {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
             }
         }).then(res => {
             console.log(res.data.data)

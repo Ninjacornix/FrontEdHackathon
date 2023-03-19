@@ -20,7 +20,7 @@ export default function RegisterForm(props) {
             "phoneNumber" : data.phone,
             "minorAlerts": data.checkbox
         }
-        axios.post('http://localhost:8080/register/member', newData, {headers})
+        axios.post('https://evil-evaluators-spring-evil-evaluators-3.azuremicroservices.io/register/member', newData, {headers})
         .then(response => {
             if(response.status === 200) {
                 document.querySelector("#registration").classList.add("hidden")

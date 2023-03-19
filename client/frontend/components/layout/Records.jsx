@@ -5,7 +5,7 @@ export default function Records() {
     const [records, setRecords] = React.useState([])
 
     React.useEffect(() => {
-        axios.get('http://localhost:8080/records', {}).then(res => {
+        axios.get('https://evil-evaluators-spring-evil-evaluators-3.azuremicroservices.io/records', {}).then(res => {
             console.log(res.data)
         })
         .catch(err => {

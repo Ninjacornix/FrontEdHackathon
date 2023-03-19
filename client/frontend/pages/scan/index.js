@@ -12,13 +12,13 @@ const Scan = () => {
   const [jwttoken,setJwttoken] = useState("");
 
   const fetchRecordsData = () => {
-    axios.get("http://localhost:8080/records").then((response) => {
+    axios.get("https://evil-evaluators-spring-evil-evaluators-3.azuremicroservices.io/records").then((response) => {
       setRecords([response.data]);
     });
   };
 
   const fetchScanData = () => {
-    axios.get("http://localhost:8080/scan").then((response) => {
+    axios.get("https://evil-evaluators-spring-evil-evaluators-3.azuremicroservices.io/scan").then((response) => {
       setScan([response.data]);
     });
   };
