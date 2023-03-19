@@ -20,7 +20,7 @@
 
 
 
-insert into Member(id, first_Name, last_Name, email, password, role, phone_number, minor_Alert, active) values (10, 'Maksim', 'Madzar', 'madzarmaksim@gmail.com', 'pass', 'ROLE_ADMIN', '0911986574', TRUE, TRUE);
+--insert into Member(id, first_Name, last_Name, email, password, role, phone_number, active) values (10, 'Maksim', 'Madzar', 'madzarmaksim@gmail.com', 'pass', 'ROLE_ADMIN', '0911986574', TRUE);
 
 insert into Alert(id, description, name, field, data, minor_Alert) values (1, 'This is a test alert', 'Test Alert', 'potentialImpact', '0.9', TRUE);
 
