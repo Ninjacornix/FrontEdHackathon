@@ -32,6 +32,11 @@ public class RecordController {
     public ResponseEntity<DataResult<List<RecordDto>>> getRecords() {
         return recordService.getRecords().intoResponseEntity();
     }
+
+    @GetMapping("/todaysRecords")
+    public ResponseEntity<DataResult<List<RecordDto>>> getTodaysRecords() {
+        return recordService.getTodaysRecords().intoResponseEntity();
+    }
     @GetMapping("/records/{id}")
     public ResponseEntity<DataResult<RecordDto>> getRecord(@PathVariable("id") Long id) {
         return recordService.getRecord(id).intoResponseEntity();
