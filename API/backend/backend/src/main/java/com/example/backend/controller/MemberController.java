@@ -15,22 +15,21 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/member")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @DeleteMapping
+    @DeleteMapping("/member")
     public ResponseEntity<ActionResult> deleteMember(@RequestParam Long id) {
         return memberService.deleteMember(id).intoResponseEntity();
     }
 
-    @GetMapping
+    @GetMapping("/members")
     public ResponseEntity<DataResult<List<MemberDto>>> getMembers() {
         return memberService.getMembers().intoResponseEntity();
     }
 
-    @PutMapping
+    @PutMapping("/member")
     public ResponseEntity<ActionResult> updateMember(@RequestBody UpdateMemberRequest request) {
         return memberService.updateMember(request).intoResponseEntity();
     }
