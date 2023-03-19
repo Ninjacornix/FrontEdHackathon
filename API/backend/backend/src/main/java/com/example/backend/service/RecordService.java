@@ -4,7 +4,6 @@ import com.example.backend.domain.Alert;
 import com.example.backend.domain.Record;
 import com.example.backend.domain.Threat;
 import com.example.backend.domain.dto.RecordDto;
-import com.example.backend.domain.dto.ThreatDto;
 import com.example.backend.exception.BadRequestException;
 import com.example.backend.mapper.Mapper;
 import com.example.backend.repository.AlertRepository;
@@ -80,30 +79,6 @@ public class RecordService {
         return new DataResult<>(true, "Successfully retrieved records", recordDtos);
     }
 
-
-    private int getRandomNumber(int min, int max) {
-        return (int) ((Math.random() * (max - min)) + min);
-    }
-
-    private void checkAlerts(List<Threat> threats) {
-        List<Alert> alerts = alertRepository.findAll();
-
-        if(!alerts.isEmpty()) {
-            for (Threat threat : threats) {
-                for (Alert alert : alerts) {
-                    if (threat.getName().equals(alert.getData()) && threat.getSource().equalsIgnoreCase(alert.getData())) {
-                        emailService.sendAlert(alert);
-                    }
-                    else if (alert.getField().equals("potentialImpact")) {
-                        if (threat.getPotentialImpact() > Float.parseFloat(alert.getData())) {
-                            emailService.sendAlert(alert);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     public DataResult<?> getThreatsCount() {
         List<Record> records = recordRepository.findAll();
         List<Threat> threats = records.stream().flatMap(record -> record.getThreats().stream()).toList();
@@ -144,5 +119,34 @@ public class RecordService {
         logger.info("Successfully added record");
         return new ActionResult(true, "Successfully added record");
     }
+
+
+    private int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
+    private void checkAlerts(List<Threat> threats) {
+        List<Alert> alerts = alertRepository.findAll();
+
+        if(!alerts.isEmpty()){
+            for(Alert alert : alerts){
+                List<Threat> threatList = new ArrayList<>();
+                for(Threat threat : threats){
+                    if(threat.getName().equals(alert.getData()) && threat.getSource().equalsIgnoreCase(alert.getData())){
+                        threatList.add(threat);
+                    }
+                    else if(alert.getField().equals("potentialImpact")){
+                        if(threat.getPotentialImpact() > Float.parseFloat(alert.getData())){
+                            threatList.add(threat);
+                        }
+                    }
+                    if(!threatList.isEmpty()){
+                        emailService.sendAlert(alert, threatList);
+                    }
+                }
+            }
+        }
+    }
+
 }
 
