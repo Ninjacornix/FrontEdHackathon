@@ -37,6 +37,9 @@ public class Mapper {
                 .email(member.getEmail())
                 .firstName(member.getFirstName())
                 .lastName(member.getLastName())
+                .minorAlert(member.isMinorAlert())
+                .phoneNumber(member.getPhoneNumber())
+                .role(member.getRole())
                 .build();
     }
 

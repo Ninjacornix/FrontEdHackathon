@@ -29,7 +29,7 @@ public class SecurityConfig {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        config.setAllowedOrigins(Collections.singletonList("https://evil-evaluators.herokuapp.com/register"));
                         config.setAllowedMethods(Collections.singletonList("*"));
                         config.setAllowCredentials(true);
                         config.setAllowedHeaders(Collections.singletonList("*"));
@@ -44,12 +44,18 @@ public class SecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeHttpRequests()
-                .antMatchers("/swagger**").permitAll()
-                .antMatchers("/api**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/login").authenticated()
-                .antMatchers(HttpMethod.DELETE, "/scan/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/alert").hasAnyRole("ADMIN", "MEMBER")
+                .antMatchers(HttpMethod.POST, "/alert").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/alert").hasRole("ADMIN")
+                .antMatchers("/member**").hasRole("ADMIN")
+                .antMatchers("/scan**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/records**").hasAnyRole("ADMIN", "MEMBER")
+                .antMatchers(HttpMethod.DELETE, "/records**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/threats/count").hasAnyRole("ADMIN", "MEMBER")
+                .antMatchers(HttpMethod.POST, "/records/file").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and().httpBasic();
         return http.build();

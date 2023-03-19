@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +60,7 @@ public class MemberService {
             member.setPassword(request.getNewPassword());
         }
         if(request.getRole() != null){
-            member.setRole(request.getRole());
+            member.setRole("ROLE_" + request.getRole().toUpperCase());
         }
         if(request.getPhoneNumber() != null){
             member.setPhoneNumber(request.getPhoneNumber());
