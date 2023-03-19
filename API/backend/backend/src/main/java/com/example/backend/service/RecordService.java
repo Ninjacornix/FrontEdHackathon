@@ -148,5 +148,16 @@ public class RecordService {
         }
     }
 
+    public DataResult<List<RecordDto>> getTodaysRecords() {
+        List<Record> records = recordRepository.findAll();
+        List<RecordDto> recordDtos = new ArrayList<>();
+        for(Record r : records){
+            if(r.getTimestamp().getDay() == new Date().getDay()){
+                recordDtos.add(mapper.recordToRecordDto(r));
+            }
+        }
+        logger.info("Successfully retrieved records");
+        return new DataResult<>(true, "Successfully retrieved records", recordDtos);
+    }
 }
 

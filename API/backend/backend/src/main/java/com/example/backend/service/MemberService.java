@@ -55,11 +55,8 @@ public class MemberService {
         if(request.getLastName() != null){
             member.setLastName(request.getLastName());
         }
-        if(request.getEmail() != null){
-            member.setEmail(request.getEmail());
-        }
-        if(request.getPassword() != null){
-            member.setPassword(request.getPassword());
+        if(request.getOldPassword() != null && request.getNewPassword() != null){
+            member.setPassword(request.getNewPassword());
         }
         if(request.getRole() != null){
             member.setRole(request.getRole());
