@@ -7,10 +7,9 @@ import com.example.backend.service.RecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,5 +45,10 @@ public class RecordController {
     @GetMapping("/threats/count")
     public ResponseEntity<DataResult<?>> getThreatsCount() {
         return recordService.getThreatsCount().intoResponseEntity();
+    }
+
+    @PostMapping("/records/file")
+    public ResponseEntity<ActionResult> addRecordFromFile(@RequestParam("file")MultipartFile file) {
+        return recordService.addRecordFromFile(file).intoResponseEntity();
     }
 }

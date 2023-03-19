@@ -13,12 +13,20 @@ import com.example.backend.repository.ThreatRepository;
 import com.example.backend.result.ActionResult;
 import com.example.backend.result.DataResult;
 import com.example.backend.result.ThreatCountResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -131,6 +139,15 @@ public class RecordService {
         RecordDto recordDto = mapper.recordToRecordDto(record);
         logger.info("Successfully retrieved record");
         return new DataResult<>(true, "Successfully retrieved record", recordDto);
+    }
+
+    @SneakyThrows
+    public ActionResult addRecordFromFile(MultipartFile file) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Record record = objectMapper.readValue(file.getInputStream(), Record.class);
+        recordRepository.save(record);
+        logger.info("Successfully added record");
+        return new ActionResult(true, "Successfully added record");
     }
 }
 
