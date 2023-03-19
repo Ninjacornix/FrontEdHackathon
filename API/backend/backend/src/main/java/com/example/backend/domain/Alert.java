@@ -22,14 +22,4 @@ public class Alert {
     private boolean minorAlert;
     private String data;
 
-    @Override
-    public String toString() {
-        return "Alert{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", name='" + name + '\'' +
-                ", field='" + field + '\'' +
-                ", data='" + data + '\'' +
-                '}';
-    }
 }
