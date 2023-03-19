@@ -135,9 +135,9 @@ const Records = () => {
 
   const dangerLevel = (level) => {
     if (level > 0 && level <= 33) {
-      return "bg-sky-500";
+      return "bg-red-200";
     } else if (level > 33 && level <= 66) {
-      return "bg-yellow-500";
+      return "bg-red-300";
     } else {
       return "bg-red-500";
     }

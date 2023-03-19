@@ -3,8 +3,9 @@ import Navbar from "@/components/layout/Navbar";
 import { AiFillDelete } from "react-icons/ai";
 import { AiOutlinePlus } from "react-icons/ai";
 import {AiFillEdit} from "react-icons/ai"
-import { useState, useEffect } from "react";
+import { useState, useEffect, } from "react";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
 import {
   TextField,
   Box,
@@ -12,6 +13,8 @@ import {
   Typography,
   Modal,
   IconButton,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 
 const System = () => {
@@ -30,24 +33,29 @@ const System = () => {
     },
   ];
 
-  const [users, setUsers] = useState(dummySystem);
+  const [users, setUsers] = useState([]);
 
   const deleteUser = (id) => {
-    setUsers(users.filter((user) => user.id !== id));
+    axios.delete("http://localhost:8080/member/?id=" + id,{headers :{
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+  } }).then();
   };
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+  
   const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [role, setRole] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [minor,setMinor] = useState(false);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [userId,setUserId] = useState(0);
+  
   const [jwttoken,setJwttoken] = useState("");
   
+  const [userId,setUserId] = useState(null);
 
   const handleEdit = (userId) => {
     
@@ -56,25 +64,30 @@ const System = () => {
       id: userId,
       firstName: firstName,
       lastName: lastName,
-      email: email,
-      password: password,
+      
+      oldPassword: password,
+      newPassword: newPassword,
       role: role,
       phoneNumber: phoneNumber,
-      active: true,
+      minor:minor
     };
 
-    const updatedUsers = users.map((user) =>
-      user.id === userId ? editUser : user
-    );
-
-    setUsers(updatedUsers);
+    axios
+      .put("http://localhost:8080/member", editUser)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => console.log(err));
+    // setUsers(updatedUsers);
     setFirstName("");
     setLastName("");
     setPassword("");
-    setEmail("");
+    setNewPassword("");
+    
     setRole("");
     setPhoneNumber("");
-    setOpen(false);
+    setMinor("");
+    setEditOpen(false);
   };
 
   const style = {
@@ -82,7 +95,7 @@ const System = () => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: 500,
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
@@ -90,32 +103,32 @@ const System = () => {
     color: "#000",
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
     
 
-    const newUser = {
-      id: users.length + 1,
-      firstName,
-      lastName,
-      password,
-      email,
-      role,
-      phoneNumber,
-      active:true
+  //   const newUser = {
+  //     id: users.length + 1,
+  //     firstName,
+  //     lastName,
+  //     password,
+  //     email,
+  //     role,
+  //     phoneNumber,
+  //     active:true
 
-    };
+  //   };
 
-    setUsers([...users, newUser]);
-    setFirstName("");
-    setLastName("");
-    setPassword("");
-    setEmail("");
-    setRole("");
-    setPhoneNumber("");
-    handleEditClose();
+  //   setUsers([...users, newUser]);
+  //   setFirstName("");
+  //   setLastName("");
+  //   setPassword("");
+  //   setEmail("");
+  //   setRole("");
+  //   setPhoneNumber("");
+  //   handleEditClose();
     
-  };
+  // };
 
   //edit
   const [editOpen, setEditOpen] = useState(false);
@@ -127,9 +140,22 @@ const System = () => {
     setUserId(user.id)
   }
 
+  const fetchUsersData = () => {
+    axios.get("http://localhost:8080/members", {headers :{
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+  } }).then((response) => {
+      setUsers(response.data);
+    });
+  };
+
+  //fetch
   useEffect(() => {
     setJwttoken(jwt_decode(localStorage.getItem("token")).authorities);
-  }, []);
+    fetchUsersData();
+  }, [users]);
+
+  console.log();
+
   
 
   return (
@@ -147,8 +173,9 @@ const System = () => {
           ADD USER <AiOutlinePlus className=""/>
         </button>
         )}
+        
         <div className="my-12">
-          {users.map((user) => (
+          {users.data && users.data.map((user) => (
             <div key={user.id}
               className={` my-8 p-4 rounded text-white bg-slate-800
               )}`}
@@ -158,7 +185,7 @@ const System = () => {
                   {user.firstName}{" "}
                 </h2>
                 {jwttoken == "ROLE_ADMIN" && (
-                <div className="">
+                <div className="flex items-center justify-between">
                 <IconButton onClick={() => deleteUser(user.id)}>
                   <AiFillDelete
                     className="text-3xl text-white"
@@ -174,13 +201,19 @@ const System = () => {
                 </IconButton>
                 </div>
                 )}
+                
               </div>
-              <p>{user.description}</p>
+              <div>
+                  
+                  <p>LastName: {user.lastName}</p>
+                  <p>Email: {user.email}</p>
+                  <p>PhoneNumber: {user.phoneNumber}</p>
+                </div>
             </div>
           ))}
         </div>
 
-        <Modal
+        {/* <Modal
           open={open}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
@@ -262,7 +295,7 @@ const System = () => {
               </Button>
             </Typography>
           </Box>
-        </Modal>
+        </Modal> */}
 
         <Modal
           open={editOpen}
@@ -303,7 +336,7 @@ const System = () => {
 
               <TextField
                 id="outlined-basic"
-                label="Password"
+                label="OldPassword"
                 variant="outlined"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -312,12 +345,14 @@ const System = () => {
 
               <TextField
                 id="outlined-basic"
-                label="Email"
+                label="NewPassword"
                 variant="outlined"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
               />
               <br />
+
+              
 
               <TextField
                 id="outlined-basic"
@@ -328,6 +363,8 @@ const System = () => {
               />
               <br />
 
+
+
               <TextField
                 id="outlined-basic"
                 label="PhoneNumber"
@@ -336,6 +373,13 @@ const System = () => {
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
               <br />
+
+              <FormControlLabel
+                control={
+                  <Checkbox onChange={() => setMinor(!minor)} />
+                }
+                label="Minor"
+              />
 
               
               
