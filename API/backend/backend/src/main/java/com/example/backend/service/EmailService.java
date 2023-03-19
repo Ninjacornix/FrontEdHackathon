@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.domain.Alert;
 import com.example.backend.domain.Member;
+import com.example.backend.domain.Threat;
 import com.example.backend.repository.MemberRepository;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
@@ -37,7 +38,7 @@ public class EmailService {
         String subject = "Confirmation Email";
         String confirmationUrl = "http://localhost:8080/register/confirmEmail?token=" + token;
 
-        String body = returnHTML(confirmationUrl);
+        String body = getBodyForConfirm(confirmationUrl);
 
         sendEmail(recipientAddress, subject, body);
     }
@@ -54,9 +55,9 @@ public class EmailService {
     }
 
     @SneakyThrows
-    public void sendAlert(Alert alert) {
-        String subject = "Alert";
-        String body = alert.toString();
+    public void sendAlert(Alert alert, List<Threat> threats) {
+        String subject = "Alert Notification";
+        String body = getBodyForAlert(alert, threats);
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
@@ -95,7 +96,77 @@ public class EmailService {
         logger.info("Email sent to " + recipientAddress);
     }
 
-    public String returnHTML(String confirmationURL){
+    private String getBodyForAlert(Alert alert, List<Threat> threats) {
+        String description = alert.getDescription();
+        String name = alert.getName();
+        String html = "<html>\n" +
+                "  <head>\n" +
+                "    <title>Alert Notification</title>\n" +
+                "    <style>\n" +
+                "      body {\n" +
+                "        font-family: Arial, sans-serif;\n" +
+                "        font-size: 14px;\n" +
+                "        line-height: 1.5;\n" +
+                "        color: #333;\n" +
+                "      }\n" +
+                "      h1 {\n" +
+                "        font-size: 24px;\n" +
+                "        font-weight: bold;\n" +
+                "        margin-bottom: 20px;\n" +
+                "      }\n" +
+                "      table {\n" +
+                "        width: 100%;\n" +
+                "        border-collapse: collapse;\n" +
+                "        margin-bottom: 20px;\n" +
+                "      }\n" +
+                "      th, td {\n" +
+                "        padding: 8px;\n" +
+                "        text-align: left;\n" +
+                "        border: 1px solid #ddd;\n" +
+                "      }\n" +
+                "      th {\n" +
+                "        background-color: #f2f2f2;\n" +
+                "      }\n" +
+                "    </style>\n" +
+                "  </head>\n" +
+                "  <body>\n" +
+                "    <h1>Alert Notification</h1>\n" +
+                "    <p><strong>Alert Name:</strong> " + name + "</p>\n" +
+                "    <p><strong>Description:</strong> " + description + "</p>\n" +
+                "    <table>\n" +
+                "      <thead>\n" +
+                "        <tr>\n" +
+                "          <th>Threat Name</th>\n" +
+                "          <th>Severity</th>\n" +
+                "          <th>Source</th>\n" +
+                "          <th>Device Type</th>\n" +
+                "          <th>Potential Impact</th>\n" +
+                "        </tr>\n" +
+                "      </thead>\n" +
+                "      <tbody>\n";
+
+        for (Threat threat : threats) {
+            html += "        <tr>\n" +
+                    "          <td>" + threat.getName() + "</td>\n" +
+                    "          <td>" + threat.getSeverity() + "</td>\n" +
+                    "          <td>" + threat.getSource() + "</td>\n" +
+                    "          <td>" + threat.getDeviceType() + "</td>\n" +
+                    "          <td>" + threat.getPotentialImpact() + "</td>\n" +
+                    "        </tr>\n";
+        }
+
+        html += "      </tbody>\n" +
+                "    </table>\n" +
+                "  </body>\n" +
+                "</html>";
+
+        System.out.println(html);
+
+
+        return html;
+    }
+
+    private String getBodyForConfirm(String confirmationURL){
         return "<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "<head>\n" +

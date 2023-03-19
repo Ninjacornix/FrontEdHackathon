@@ -10,8 +10,16 @@ import {
   Typography,
   Modal,
   IconButton,
+  FormControlLabel,
+  Checkbox,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from "@mui/material";
+import axios from "axios";
 import jwt_decode from "jwt-decode";
+
 const Alerts = () => {
   const dummyAlerts = [
     {
@@ -40,9 +48,9 @@ const Alerts = () => {
   const [jwttoken,setJwttoken] = useState("");
 
   const dangerClass = (dangerLevel) => {
-    if (dangerLevel <= 33 && dangerLevel >= 0) {
+    if (dangerLevel === "severity") {
       return "bg-red-200";
-    } else if (dangerLevel <= 66 && dangerLevel >= 34) {
+    } else if (dangerLevel === "source") {
       return "bg-red-300";
     } else {
       return "bg-red-500";
@@ -52,10 +60,12 @@ const Alerts = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  
-  const [message,setMessage] = useState("");
-  const [description,setDescription] = useState("");
-  const [dangerLevel,setDangerLevel] = useState("");
+
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [data, setData] = useState("");
+  const [field, setField] = useState("");
+  const [minor, setMinor] = useState(false);
 
   const style = {
     position: "absolute",
@@ -72,31 +82,48 @@ const Alerts = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
 
     const newAlert = {
       id: alerts.length + 1,
-      message: message,
+      name: name,
       description: description,
-      dangerLevel: dangerLevel,
+      data:data,
+      field:field,
+      minor:minor,
+
     };
 
-    setAlerts([...alerts, newAlert]);
-    setMessage("");
+    // setAlerts([...alerts, newAlert]);
+    axios
+      .post("http://localhost:8080/alert/", newAlert)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => console.log(err));
+    setName("");
     setDescription("");
-    setDangerLevel("");
+    setData("");
+    setField("");
+    setMinor("");
+
     handleClose();
-    
   };
 
   const deleteAlert = (id) => {
-    setAlerts(alerts.filter((alert) => alert.id !== id));
-    
+    axios.delete("http://localhost:8080/alert/?id=" + id).then();
   };
+
+  const fetchAlertsData = () => {
+    axios.get("http://localhost:8080/alert").then((response) => {
+      setAlerts(response.data);
+    });
+  };
+  console.log(alerts.data);
 
   useEffect(() => {
     setJwttoken(jwt_decode(localStorage.getItem("token")).authorities);
-  }, []);
+    fetchAlertsData();
+  }, [alerts]);
 
   return (
     <>
@@ -114,28 +141,27 @@ const Alerts = () => {
         </button>
         )}
         <div className="my-12">
-          {alerts.map((alert) => (
-            <div key={alert.id}
-              className={` my-8 p-4 rounded text-black ${dangerClass(
-                alert.dangerLevel
-              )}`}
-            >
-              <div className="flex items-center justify-between">
-                <h2 className="text-3xl font-bold font-mono">
-                  {alert.message}{" "}
-                </h2>
-                {jwttoken === "ROLE_ADMIN" && (
-                <IconButton onClick={() => deleteAlert(alert.id)}>
-                  <AiFillDelete
-                    className="text-3xl"
-                    
-                  />
-                </IconButton>
-                )}
+          {alerts.data &&
+            alerts.data.map((alert) => (
+              <div
+                key={alert.id}
+                className={` my-8 p-4 rounded text-black ${dangerClass(
+                  alert.field
+                )}`}
+              >
+                <div className="flex items-center justify-between">
+                  <h2 className="text-3xl font-bold font-mono">
+                    {alert.name}{" "}
+                  </h2>
+                  {jwttoken === "ROLE_ADMIN" && (
+                  <IconButton onClick={() => deleteAlert(alert.id)}>
+                    <AiFillDelete className="text-3xl" />
+                  </IconButton>
+                  )}
+                </div>
+                <p>{alert.description}</p>
               </div>
-              <p>{alert.description}</p>
-            </div>
-          ))}
+            ))}
         </div>
 
         <Modal
@@ -160,10 +186,10 @@ const Alerts = () => {
             >
               <TextField
                 id="outlined-basic"
-                label="Message"
+                label="Name"
                 variant="outlined"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
               <br />
               <TextField
@@ -176,12 +202,34 @@ const Alerts = () => {
               <br />
               <TextField
                 id="outlined-basic"
-                label="Danger level"
+                label="Data"
                 variant="outlined"
-                value={dangerLevel}
-                onChange={(e) => setDangerLevel(e.target.value)}
-                type="number"
-                InputProps={{ inputProps: { min: 0, max: 100 } }}
+                value={data}
+                onChange={(e) => setData(e.target.value)}
+              />
+              <br />
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Field</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={field}
+                  label="Field"
+                  onChange={(e) => setField(e.target.value)}
+                >
+                  <MenuItem value={'name'}>Name</MenuItem>
+                  <MenuItem value={'security'}>Security</MenuItem>
+                  <MenuItem value={'source'}>Source</MenuItem>
+                  <MenuItem value={'potentialImpact'}>PotentialImpact</MenuItem>
+                  <MenuItem value={'deviceType'}>DeviceType</MenuItem>
+                </Select>
+              </FormControl>
+              <br />
+              <FormControlLabel
+                control={
+                  <Checkbox defaultChecked onChange={() => setMinor(!minor)} />
+                }
+                label="Minor"
               />
 
               <br />
@@ -191,8 +239,6 @@ const Alerts = () => {
             </Typography>
           </Box>
         </Modal>
-
-        
       </div>
     </>
   );

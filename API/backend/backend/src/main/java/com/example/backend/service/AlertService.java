@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,12 +34,17 @@ public class AlertService {
     }
 
     public ActionResult deleteAlert(Long id) {
+        Optional<Alert> alert = alertRepository.findById(id);
+        if(alert.isEmpty()) {
+            logger.error("Alert with id: '" + id + "' not found");
+            return new ActionResult(false, "Alert with id: '" + id + "' not found");
+        }
         alertRepository.deleteById(id);
         logger.info("Alert deleted successfully");
         return new ActionResult(true, "Alert deleted successfully");
     }
 
-    public DataResult<List<Alert>> getAlerts() {
+        public DataResult<List<Alert>> getAlerts() {
         logger.info("Alerts fetched successfully");
         return new DataResult<>(true, "Alerts fetched successfully", alertRepository.findAll());
     }
