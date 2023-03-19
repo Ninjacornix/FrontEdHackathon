@@ -4,11 +4,12 @@ import { AiOutlineSearch } from "react-icons/ai";
 import axios from "axios";
 import { IconButton } from "@mui/material";
 import { AiFillEye } from "react-icons/ai";
-
+import jwt_decode from "jwt-decode";
 const Scan = () => {
   
   const [scan, setScan] = useState([]);
   const [num,setNum] = useState(-1);
+  const [jwttoken,setJwttoken] = useState("");
 
   const fetchRecordsData = () => {
     axios.get("http://localhost:8080/records").then((response) => {
@@ -34,9 +35,10 @@ const Scan = () => {
     }
   };
 
+  useEffect(() => {
+    setJwttoken(jwt_decode(localStorage.getItem("token")).authorities);
+  }, []);
 
-  
-  console.log("Scan: ",scan);
   return (
     <>
       <Navbar />
@@ -45,12 +47,14 @@ const Scan = () => {
       <h1 className="text-4xl font-bold font-mono text-center my-10">
           SCAN
         </h1>
+        {jwttoken === "ROLE_ADMIN" && (
         <button
           onClick={fetchScanData}
           className="flex items-center justify-center text-3xl  p-4 w-2/6 m-auto h-16 border-solid border-2 rounded border-red-500 text-white bg-red-500 gap-2"
         >
           <AiOutlineSearch /> SCAN NOW
         </button>
+        )}
 
         
 

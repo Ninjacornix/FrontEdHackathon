@@ -5,6 +5,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { AiFillEye } from "react-icons/ai";
 import { useState,useEffect } from "react";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 import {
   TextField,
   Box,
@@ -73,6 +74,7 @@ const Records = () => {
   const [severity,setSeverity] = useState("");
   const [potentialImpact,setPotentialImpact] = useState("");
   const [index,setIndex] = useState(-1);
+  const [jwttoken,setJwttoken] = useState("");
 
   const style = {
     position: "absolute",
@@ -126,7 +128,10 @@ const Records = () => {
     });
   };
 
+  
+
   useEffect(() => {
+    setJwttoken(jwt_decode(localStorage.getItem("token")).authorities);
     fetchRecordsData();
   },[]);
 
@@ -151,12 +156,15 @@ const Records = () => {
         <h1 className="text-4xl font-bold font-mono text-center mb-10">
           RECORDS
         </h1>
-        <button
-          onClick={handleOpen}
-          className="flex items-center justify-center p-4 w-2/6 m-auto h-16 border-solid border-2 rounded border-blue-900 text-black bg-blue-900 gap-2"
-        >
-          ADD RECORD <AiOutlinePlus />
-        </button>
+
+        {jwttoken === "ROLE_ADMIN" && (
+          <button
+            onClick={handleOpen}
+            className="flex items-center justify-center p-4 w-2/6 m-auto h-16 border-solid border-2 rounded border-blue-900 text-black bg-blue-900 gap-2"
+          >
+            ADD RECORD <AiOutlinePlus />
+          </button>
+        )}
         <div className="my-12">
           {records.data && records.data.map((record) => (
             <div key={record.id}
@@ -168,12 +176,14 @@ const Records = () => {
                 {"Record "}{record.id}
                 </h2>
                 <p>{record.timestamp}</p>
+                {jwttoken === "ROLE_ADMIN" && (
                 <IconButton onClick={() => deleteRecord(record.id)}>
                   <AiFillDelete
                     className="text-3xl"
                     
                   />
                 </IconButton>
+                )}
               </div>
               {index === record.id && <div>
                 {record.threats.map((threat) => <div className="border-b-2 py-2">

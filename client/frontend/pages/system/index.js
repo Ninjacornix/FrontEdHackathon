@@ -3,7 +3,8 @@ import Navbar from "@/components/layout/Navbar";
 import { AiFillDelete } from "react-icons/ai";
 import { AiOutlinePlus } from "react-icons/ai";
 import {AiFillEdit} from "react-icons/ai"
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import jwt_decode from "jwt-decode";
 import {
   TextField,
   Box,
@@ -45,6 +46,8 @@ const System = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [userId,setUserId] = useState(0);
+  const [jwttoken,setJwttoken] = useState("");
+  
 
   const handleEdit = (userId) => {
     
@@ -124,6 +127,9 @@ const System = () => {
     setUserId(user.id)
   }
 
+  useEffect(() => {
+    setJwttoken(jwt_decode(localStorage.getItem("token")).authorities);
+  }, []);
   
 
   return (
@@ -133,12 +139,14 @@ const System = () => {
         <h1 className="text-4xl font-bold font-mono text-center mb-10">
           SYSTEM
         </h1>
+        {jwttoken == "ROLE_ADMIN" && (
         <button
           onClick={handleOpen}
           className="flex items-center justify-center p-4 w-2/6 m-auto h-16 border-solid border-2 rounded border-slate-500 text-white bold bg-slate-500 gap-2"
         >
           ADD USER <AiOutlinePlus className=""/>
         </button>
+        )}
         <div className="my-12">
           {users.map((user) => (
             <div key={user.id}
@@ -149,6 +157,7 @@ const System = () => {
                 <h2 className="text-3xl font-bold font-mono">
                   {user.firstName}{" "}
                 </h2>
+                {jwttoken == "ROLE_ADMIN" && (
                 <div className="">
                 <IconButton onClick={() => deleteUser(user.id)}>
                   <AiFillDelete
@@ -164,6 +173,7 @@ const System = () => {
                   />
                 </IconButton>
                 </div>
+                )}
               </div>
               <p>{user.description}</p>
             </div>

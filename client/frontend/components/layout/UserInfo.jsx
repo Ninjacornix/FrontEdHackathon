@@ -4,14 +4,22 @@ import React from "react"
 export default function UserInfo() {
 
     const [user, setUser] = React.useState({})
+    const [firstName, setFirstName] = React.useState("")
+    const [lastName, setLastName] = React.useState("")
+    const [email, setEmail] = React.useState("")
+    const [phoneNumber, setPhoneNumber] = React.useState("")
 
     React.useEffect(() => {
-        axios.get('http://localhost:3000/api/users', {
+        axios.get('http://localhost:8080/member/member', {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }).then(res => {
-            setUser(res.data)
+            console.log(res.data.data)
+            setFirstName(res.data.data.firstName)
+            setLastName(res.data.data.lastName)
+            setEmail(res.data.data.email)
+            setPhoneNumber(res.data.data.phoneNumber)
         })
         .catch(err => {
             console.log(err)
@@ -26,16 +34,16 @@ export default function UserInfo() {
             <form class="flex-auto p-6">
                 <div class="flex flex-wrap">
                     <h1 class="flex-auto text-lg font-semibold text-slate-900">
-                        {user.FirstName}
+                        {firstName == undefined ? "No first name" : firstName}
                     </h1>
                     <div class="w-full flex-none text-sm font-medium text-slate-700 mt-2">
-                        {user.LastName}
+                        {lastName == undefined ? "No last name" : lastName}
                     </div>
                     <div class="w-full flex-none text-sm font-medium text-slate-700 mt-2">
-                        {user.mail}
+                        {email == undefined ? "No email" : email}
                     </div>
                     <div class="w-full flex-none text-sm font-medium text-slate-700 mt-2">
-                        {user.phone}
+                        {phoneNumber == undefined ? "No phone number" : phoneNumber}
                     </div>
                 </div>
             </form>

@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "@/components/layout/Navbar";
 import { AiFillDelete } from "react-icons/ai";
 import { AiOutlinePlus } from "react-icons/ai";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   TextField,
   Box,
@@ -11,7 +11,7 @@ import {
   Modal,
   IconButton,
 } from "@mui/material";
-
+import jwt_decode from "jwt-decode";
 const Alerts = () => {
   const dummyAlerts = [
     {
@@ -37,6 +37,7 @@ const Alerts = () => {
   ];
 
   const [alerts, setAlerts] = useState(dummyAlerts);
+  const [jwttoken,setJwttoken] = useState("");
 
   const dangerClass = (dangerLevel) => {
     if (dangerLevel <= 33 && dangerLevel >= 0) {
@@ -93,6 +94,10 @@ const Alerts = () => {
     
   };
 
+  useEffect(() => {
+    setJwttoken(jwt_decode(localStorage.getItem("token")).authorities);
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -100,12 +105,14 @@ const Alerts = () => {
         <h1 className="text-4xl font-bold font-mono text-center mb-10">
           ALERTS
         </h1>
+        {jwttoken === "ROLE_ADMIN" && (
         <button
           onClick={handleOpen}
           className="flex items-center justify-center p-4 w-2/6 m-auto h-16 border-solid border-2 rounded border-red-100 text-black bg-red-100 gap-2"
         >
           ADD ALERT <AiOutlinePlus />
         </button>
+        )}
         <div className="my-12">
           {alerts.map((alert) => (
             <div key={alert.id}
@@ -117,12 +124,14 @@ const Alerts = () => {
                 <h2 className="text-3xl font-bold font-mono">
                   {alert.message}{" "}
                 </h2>
+                {jwttoken === "ROLE_ADMIN" && (
                 <IconButton onClick={() => deleteAlert(alert.id)}>
                   <AiFillDelete
                     className="text-3xl"
                     
                   />
                 </IconButton>
+                )}
               </div>
               <p>{alert.description}</p>
             </div>
