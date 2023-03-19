@@ -10,7 +10,7 @@ export default function UserInfo() {
     const [phoneNumber, setPhoneNumber] = React.useState("")
 
     React.useEffect(() => {
-        axios.get('http://localhost:8080/member/member', {
+        axios.get('http://localhost:8080/member', {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }

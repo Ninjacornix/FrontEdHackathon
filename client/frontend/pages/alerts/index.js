@@ -60,7 +60,7 @@ const Alerts = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const [upload, setUpload] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [data, setData] = useState("");
@@ -132,7 +132,7 @@ const Alerts = () => {
         <h1 className="text-4xl font-bold font-mono text-center mb-10">
           ALERTS
         </h1>
-        {jwttoken === "ROLE_ADMIN" && (
+        {jwttoken === "ROLE_MEMBER" && (
         <button
           onClick={handleOpen}
           className="flex items-center justify-center p-4 w-2/6 m-auto h-16 border-solid border-2 rounded border-red-100 text-black bg-red-100 gap-2"

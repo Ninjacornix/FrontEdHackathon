@@ -74,6 +74,8 @@ const Records = () => {
   const [potentialImpact,setPotentialImpact] = useState("");
   const [index,setIndex] = useState(-1);
   const [jwttoken,setJwttoken] = useState("");
+  const [file, setFile] = useState(null);
+
 
   const style = {
     position: "absolute",
@@ -88,33 +90,33 @@ const Records = () => {
     color: "#000",
   };
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const date = new Date();
+   const handleSubmit = (event) => {
+     event.preventDefault();
+     const date = new Date();
 
-  //   let day = date.getDate();
-  //   let month = date.getMonth() + 1;
-  //   let year = date.getFullYear();
+     let day = date.getDate();
+     let month = date.getMonth() + 1;
+     let year = date.getFullYear();
 
-  //   const newRecord = {
-  //     id: records.length + 1,
-  //     name: name,
-  //     source: source,
-  //     severity: severity,
-  //     potentialImpact: potentialImpact,
-  //     time: `${day}/${month}/${year}`,
-  //   };
-  //   axios
-  //     .post("http://localhost:8080/records/",newRecord)
-  //     .then((response) => displayOutput(response))
-  //     .catch((err) => console.log(err));
-  //   setRecords([...records, newRecord]);
-  //   setName("");
-  //   setSource("");
-  //   setSeverity("");
-  //   setPotentialImpact("");
-  //   handleClose();
-  // };
+     const newRecord = {
+       id: records.length + 1,
+       name: name,
+       source: source,
+       severity: severity,
+       potentialImpact: potentialImpact,
+       time: `${day}/${month}/${year}`,
+     };
+     axios
+    .post("http://localhost:8080/records/",newRecord)
+       .then((response) => displayOutput(response))
+       .catch((err) => console.log(err));
+     setRecords([...records, newRecord]);
+     setName("");
+     setSource("");
+     setSeverity("");
+     setPotentialImpact("");
+     handleClose();
+   };
 
   const deleteRecord = (id) => {
     axios.delete("http://localhost:8080/records/" + id).then();
@@ -125,8 +127,6 @@ const Records = () => {
       setRecords(response.data);
     });
   };
-
-  
 
   useEffect(() => {
     setJwttoken(jwt_decode(localStorage.getItem("token")).authorities);
@@ -143,6 +143,22 @@ const Records = () => {
     }
   };
 
+  const handleFileInputChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', file);
+    axios.post("http://localhost:8080/records/file", formData, {headers: {
+      'Content-Type': 'multipart/form-data'
+    }}).then(() => {
+      alert("File uploaded successfully");
+      fetchRecordsData();
+    });
+  };
+
   return (
     <>
       <Navbar />
@@ -157,6 +173,14 @@ const Records = () => {
         >
           ADD RECORD <AiOutlinePlus />
         </button>
+        )}
+        {jwttoken === "ROLE_ADMIN" && (
+          <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto mt-8 lg:py-0 p-6 space-y-4 md:space-y-6 sm:p-8 w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 center">
+          <form className="space-y-4 md:space-y-6" onSubmit={handleFormSubmit}>
+            <input className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" type="file" onChange={handleFileInputChange} />
+            <button className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="submit">Upload</button>
+          </form>
+        </div>
         )}
         <div className="my-12">
           {records.data &&
@@ -212,7 +236,7 @@ const Records = () => {
             ))}
         </div>
 
-        {/* <Modal
+        <Modal
           open={open}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
@@ -272,7 +296,7 @@ const Records = () => {
               </Button>
             </Typography>
           </Box>
-        </Modal> */}
+        </Modal>
       </div>
     </>
   );
