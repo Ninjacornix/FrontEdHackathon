@@ -6,9 +6,12 @@ import com.example.backend.domain.Threat;
 import com.example.backend.domain.dto.MemberDto;
 import com.example.backend.domain.dto.RecordDto;
 import com.example.backend.domain.dto.ThreatDto;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -37,6 +40,7 @@ public class Mapper {
                 .build();
     }
 
+    @SneakyThrows
     public RecordDto recordToRecordDto(Record record) {
         Float potentialImpact = (float) record.getThreats().stream().mapToDouble(Threat::getPotentialImpact).average().orElse(0.0);
         return RecordDto.builder()
